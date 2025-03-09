@@ -1,4 +1,4 @@
-plugins {
+plugins {//この画面は、プログラムのバージョンアップするときなどに使い、開発時はあまり使わない。
 	id 'java'
 	id 'war'
 	id 'org.springframework.boot' version '3.4.3'
@@ -19,12 +19,16 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-web'//プログラム実行するとき使う
+
+	//「apache.commons lang」アパッチ コモンズ ラング　= 便利機能、ユーティリティ
+	implementation 'org.apache.commons:commons-lang3:3.17.0'
+
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'//プログラム実行するとき”のみ”使う
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'//testするときだけ使う
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+tasks.named('test') {//グレイドルに”test”を追加できる　
+	useJUnitPlatform()//
 }
