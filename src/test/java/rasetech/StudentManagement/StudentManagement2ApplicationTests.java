@@ -1,4 +1,4 @@
-package rasetech.StudentManagement2;
+package rasetech.StudentManagement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
