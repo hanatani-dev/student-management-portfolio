@@ -1,6 +1,6 @@
 package rasetech.StudentManagement;
 
-public class Student {
+public class Student {//MySQLの、Student＿ManagementのDatebaseの中につくったTABLE「students」に関連するようにここ作っていく。
   private String name;
   private int age;
 

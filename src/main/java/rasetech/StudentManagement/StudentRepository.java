@@ -12,12 +12,5 @@ public interface StudentRepository {
   @Select("SELECT * FROM student WHERE name = #{name}")
   Student searchByName(String name);
 
-  @Insert("INSERT student values(#{name}, #{age}")
-  void registerStudent(String name, int age);
-
-  @Update("UPDATE studen SET age = #{age}WHERE name = #{name}")
-  void updateStudent(String name, int age);
-
-  @Delete("DLETE FROM student WHERE name = #{name}")
-  void deleteStudent(String name);
+  //@Insert、@Update、@Deleteも、第10回では使わないので、ノイズが起きないように消しておく。
 }
