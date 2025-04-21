@@ -1,15 +1,16 @@
 package rasetech.StudentManagement;
 
 public class Student {//MySQLの、Student＿ManagementのDatebaseの中につくったTABLE「students」に関連するようにここ作っていく。
-  private String name;
+  private String fullName;//ここは、後で変数名かわる！　application.propertiesで、trueとした文に解説した通り、
+  //Mysqlにて設定した箇所＝アンダーバーの前は小文字でいいが、アンダーバーの後ろは大文字というルール、ここにも使われる。
   private int age;
 
-  public String getName() {
-    return name;
+  public String getFullName() {//name
+    return fullName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
   }
 
   public int getAge() {
