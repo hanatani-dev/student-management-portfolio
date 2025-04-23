@@ -18,8 +18,13 @@ public class StudentManagement2Application {
 		SpringApplication.run(StudentManagement2Application.class, args);
 	}
 
-	@GetMapping("/student")
+	@GetMapping("/studentList")//@PostMapping（登録）、@PatchMapping（更新）、@DeleteMapping（削除）は第10回では使わないため、消す。
 	public List<Student> getStudentList() {//Listに赤線エラー出たが、青文字のインポート押したらエラー消えた。
-		return repository.search();//@PostMapping（登録）、@PatchMapping（更新）、@DeleteMapping（削除）は第10回では使わないため、消す。
+		return repository.searchStudent();
+	}
+
+	@GetMapping("/studentsCourseList")
+	public List<StudentsCourses> getStudentsCoursesList(){
+		return repository.searchStudentsCourses();
 	}
 }

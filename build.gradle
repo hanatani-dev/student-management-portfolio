@@ -14,16 +14,26 @@ java {
 	}
 }
 
+configurations {//第10回で追加。
+	compileOnly {
+		extendsFrom annotationProcessor//この、アノテーションプロセッサー入れるために、ランボックの機能入れる。
+	}
+}
+
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'//プログラム実行するとき使う
-	//便利機能、ユーティリティ
 
+	//便利機能、ユーティリティ
 	//「apache.commons lang」アパッチ コモンズ ラング　= 便利機能、ユーティリティ
 	implementation 'org.apache.commons:commons-lang3:3.17.0'
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 
 	//MySQLドライバ
 	runtimeOnly	'com.mysql:mysql-connector-j'
