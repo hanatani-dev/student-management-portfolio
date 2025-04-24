@@ -18,8 +18,6 @@ import rasetech.StudentManagement.Repository.StudentRepository;
  * ④　Repositoryオブジェクトから返ってきたSQLの結果を、またこのServiceオブジェクトで受け取って、
  * Serviceオブジェクトでまた処理が必要であれば、行われてから、Controllerオブジェクトに処理されたものが返る。
  */
-
-
 @Service
 public class StudentService {
 

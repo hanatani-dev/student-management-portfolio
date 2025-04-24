@@ -10,7 +10,6 @@ import rasetech.StudentManagement.Service.StudentService;
 /**
  * ①　まず、Controllerオブジェクトには、リクエスト飛んでくる。ここで、レスポンス処理とかする。
  */
-
 @RestController//メインオブジェクトで作業してたControllerを、このオブジェクトに分ける。
 public class StudentController {
 
@@ -31,5 +30,4 @@ public class StudentController {
   public List<StudentsCourses> getStudentsCoursesList() {
     return service.searchStudentsCoursesList();
   }
-
 }
