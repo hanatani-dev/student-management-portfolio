@@ -2,8 +2,6 @@ package rasetech.StudentManagement.Repository;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import rasetech.StudentManagement.Data.Student;
 import rasetech.StudentManagement.Data.StudentsCourses;
@@ -31,9 +29,5 @@ public interface StudentRepository {
   List<Student> search();//searchでリファクタリングして、シグネチャーの変更で「String name」消した。
 
   @Select("SELECT * FROM students_courses")
-  @Results({
-      @Result(property = "startDataAt", column = "start_date"),
-      @Result(property = "endDataAt", column = "end_date")
-  })
   List<StudentsCourses> searchStudentsCourses();
 }
