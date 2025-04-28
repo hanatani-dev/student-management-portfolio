@@ -29,8 +29,9 @@
     <td th:text="${studentDetail.student.area}"> Shizuoka-ken, Shizuoka-shi</td>
     <td th:text="${studentDetail.student.age}">10</td>
     <td th:text="${studentDetail.student.sex}">Female</td>
-    <td th:text="${studentDetail.student.remark != null ? studentDetail.student.remark : 'None'}">None</td>
+    <td th:text="${studentDetail.student.remark != null ? studentDetail.student.remark : ''}"></td>
   </tr>
   </tbody>
-
-
+</table>
+</body>
+</html>
