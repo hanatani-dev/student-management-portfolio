@@ -29,29 +29,10 @@ public class StudentService {
   }
 
   public List<Student> searchStudentList() {
-    //ここで何かしらの処理を行う・・・検索処理
-
-    List<Student> allStudents = repository.search();
-
-    List<Student> studentsIn30s = allStudents.stream()
-        .filter(student -> student.getAge() >= 30 && student.getAge() < 40)
-        .toList();
-    //絞り込みをする。年齢が30代の人のみを抽出する。
-    //抽出したリストをcontrollerオブジェクトに返す。
-
-    return studentsIn30s;//これは Repository層（データアクセス層） のメソッドを直接呼んでる。 生SQLまたはJPAクエリなどで、データベースからデータをそのまま取得する。
+    return repository.search();
   }
 
   public List<StudentsCourses> searchStudentsCoursesList() {
-    // 全件取得
-    List<StudentsCourses> allCourses = repository.searchStudentsCourses();
-
-    List<StudentsCourses> javaCourses = allCourses.stream()
-        .filter(course -> course.getCourseName() != null &&
-            course.getCourseName().toLowerCase().contains("java"))
-        .toList();
-    // 絞り込み検索で「Javaコース」のコース情報のみを抽出する。
-    //　抽出したリストをcontrollerオブジェクトに返す。
-    return javaCourses;
+    return repository.searchStudentsCourses();
   }
 }
