@@ -1,9 +1,10 @@
 package rasetech.StudentManagement.Controller;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import rasetech.StudentManagement.Data.Student;
+import rasetech.StudentManagement.Controller.Converter.StudentConverter;
 import rasetech.StudentManagement.Data.StudentsCourses;
 import rasetech.StudentManagement.Service.StudentService;
 
@@ -14,13 +15,16 @@ import rasetech.StudentManagement.Service.StudentService;
 public class StudentController {
 
   private StudentService service;
+  private StudentConverter converter;
 
-  public StudentController(StudentService service) {
+  @Autowired
+  public StudentController(StudentService service, StudentConverter converter) {
     this.service = service;
+    this.converter = converter;
   }
 
   @GetMapping("/studentsList")
-  public List<Student> getStudentList() {
+  public List<StudentDetails> getStudentList() {
     //リクエストの加工処理、入力チェックとか入ってくる。
     return service.searchStudentList();
     //これは Service層（ビジネスロジック層） のメソッドを呼んでる。コントローラーから呼び出すなら基本はService層を通すのがベスト！　直接Repositoryを呼ぶと、テスト・変更・拡張がしにくくなることがあるよ。
