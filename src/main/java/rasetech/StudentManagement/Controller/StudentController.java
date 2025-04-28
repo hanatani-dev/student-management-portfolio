@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import rasetech.Domain.StudentDetail;
 import rasetech.StudentManagement.Controller.Converter.StudentConverter;
 import rasetech.StudentManagement.Data.Student;
 import rasetech.StudentManagement.Data.StudentsCourses;
@@ -37,5 +40,10 @@ public class StudentController {
   @GetMapping("/studentsCourseList")
   public List<StudentsCourses> getStudentsCoursesList() {
     return service.searchStudentsCoursesList();
+  }
+
+  @PostMapping("/registerStudent")
+  public String registerStudent(@ModelAttribute StudentDetail studentDetail) {
+
   }
 }
