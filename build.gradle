@@ -1,4 +1,4 @@
-plugins {
+plugins {//この画面は、プログラムのバージョンアップするときなどに使い、開発時はあまり使わない。
 	id 'java'
 	id 'war'
 	id 'org.springframework.boot' version '3.4.3'
@@ -14,17 +14,38 @@ java {
 	}
 }
 
+configurations {//第10回で追加。
+	compileOnly {
+		extendsFrom annotationProcessor//この、アノテーションプロセッサー入れるために、ランボックの機能入れる。
+	}
+}
+
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-web'//プログラム実行するとき使う
+
+	//便利機能、ユーティリティ
+	//「apache.commons lang」アパッチ コモンズ ラング　= 便利機能、ユーティリティ
+	implementation 'org.apache.commons:commons-lang3:3.17.0'
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	//MySQLドライバ
+	runtimeOnly	'com.mysql:mysql-connector-j'
+
+	//MyBatis
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'//プログラム実行するとき”のみ”使う
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'//testするときだけ使う
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+tasks.named('test') {//グレイドルに”test”を追加できる　
+	useJUnitPlatform()//
 }
