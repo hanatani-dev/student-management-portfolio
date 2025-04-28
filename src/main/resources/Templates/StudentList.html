@@ -11,6 +11,7 @@
   <tr>
     <th>ID</th>
     <th>Name</th>
+    <th>NickName</th>
     <th>Email Address</th>
     <th>Area</th>
     <th>Age</th>
@@ -20,5 +21,16 @@
   </thead>
   <tbody>
   <!-- ここにThymeleafでデータを流し込む -->
+  <tr th:each="studentDetail : ${studentList}">
+    <td th:text="${studentDetail.student.id}">1</td>
+    <td th:text="${studentDetail.student.name}">SakuraMomoko</td>
+    <td th:text="${studentDetail.student.nickname}">Maru-chan</td>
+    <td th:text="${studentDetail.student.email}">Maruko@gmail.com</td>
+    <td th:text="${studentDetail.student.area}"> Shizuoka-ken, Shizuoka-shi</td>
+    <td th:text="${studentDetail.student.age}">10</td>
+    <td th:text="${studentDetail.student.sex}">Female</td>
+    <td th:text="${studentDetail.student.remark != null ? studentDetail.student.remark : 'None'}">None</td>
+  </tr>
   </tbody>
+
 
