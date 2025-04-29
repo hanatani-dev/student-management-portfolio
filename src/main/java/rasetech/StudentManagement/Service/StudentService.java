@@ -28,6 +28,11 @@ public class StudentService {
     this.repository = repository;
   }
 
+  // 学生情報をデータベースに保存するメソッド
+  public void saveStudent(Student student) {
+    repository.save(student);  // Studentをデータベースに保存
+  }
+
   public List<Student> searchStudentList() {
     return repository.search();
   }
