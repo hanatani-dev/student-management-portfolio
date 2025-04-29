@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Information List</title>
+</head>
+<body>
+<h1>Students List</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>NickName</th>
+    <th>Email Address</th>
+    <th>Area</th>
+    <th>Age</th>
+    <th>Sex</th>
+    <th>Remark</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- ここにThymeleafでデータを流し込む -->
+  <tr th:each="studentDetail : ${studentList}">
+    <td th:text="${studentDetail.student.id}">1</td>
+    <td th:text="${studentDetail.student.name}">SakuraMomoko</td>
+    <td th:text="${studentDetail.student.nickname}">Maru-chan</td>
+    <td th:text="${studentDetail.student.email}">Maruko@gmail.com</td>
+    <td th:text="${studentDetail.student.area}"> Shizuoka-ken, Shizuoka-shi</td>
+    <td th:text="${studentDetail.student.age}">10</td>
+    <td th:text="${studentDetail.student.sex}">Female</td>
+    <td th:text="${studentDetail.student.remark != null ? studentDetail.student.remark : ''}"></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
