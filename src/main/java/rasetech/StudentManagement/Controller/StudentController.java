@@ -52,17 +52,13 @@ public class StudentController {
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     if (result.hasErrors()) {
-      return "registerStudent"; // バリデーションエラーがある場合、フォームに戻る
+      return "registerStudent";
     }
 
-    // 新しいStudentオブジェクトを作成し、学生情報を設定
-    Student student = new Student();
-    student.setName(studentDetail.getStudent().getName());  // 必要な情報を設定
-
-    // Serviceクラスを使用して学生情報を保存
+    // 受け取ったStudentオブジェクトをそのまま使って保存
+    Student student = studentDetail.getStudent();
     service.saveStudent(student);
 
-    // 学生リストにリダイレクト
     return "redirect:/studentList";
   }
 }

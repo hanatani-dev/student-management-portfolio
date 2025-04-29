@@ -33,6 +33,12 @@ public interface StudentRepository {
   List<StudentsCourses> searchStudentsCourses();
 
   // 学生情報の保存
-  @Insert("INSERT INTO students (name) VALUES (#{name})")
+  @Insert("""
+        INSERT INTO students 
+          (name, nickname, email, area, age, sex, remark, is_deleted)
+        VALUES 
+          (#{name}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, 0)
+      """)
   void save(Student student);
+
 }
