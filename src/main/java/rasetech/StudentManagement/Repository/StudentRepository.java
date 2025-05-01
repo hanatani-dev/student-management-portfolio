@@ -3,6 +3,7 @@ package rasetech.StudentManagement.Repository;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import rasetech.StudentManagement.Data.Student;
 import rasetech.StudentManagement.Data.StudentsCourses;
@@ -21,24 +22,20 @@ import rasetech.StudentManagement.Data.StudentsCourses;
 @Mapper
 public interface StudentRepository {
 
-  /**
-   * 全件検索します。
-   *
-   * @return　全件検索した受講生情報の一覧
-   */
   @Select("SELECT * FROM students")
-  List<Student> search();//searchでリファクタリングして、シグネチャーの変更で「String name」消した。
+  List<Student> search();
 
   @Select("SELECT * FROM students_courses")
   List<StudentsCourses> searchStudentsCourses();
 
   // 学生情報の保存
-  @Insert("""
-        INSERT INTO students 
-          (name, nickname, email, area, age, sex, remark, is_deleted)
-        VALUES 
-          (#{name}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, 0)
-      """)
-  void save(Student student);
+  @Insert("INSERT INTO students(name, nickname, email, area, age, sex, remark, is_deleted) "
+      + "VALUES(#{name}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void registerStudent(Student student);
 
+  // コース情報の保存
+  @Insert("INSERT INTO students_courses(student_id, course_name, start_data_at, end_data_at) " +
+      "VALUES(#{studentId}, #{courseName}, #{startDataAt}, #{endDataAt})")
+  void registerStudentsCourse(StudentsCourses course);
 }

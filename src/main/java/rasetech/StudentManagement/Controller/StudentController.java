@@ -1,5 +1,6 @@
 package rasetech.StudentManagement.Controller;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +46,9 @@ public class StudentController {
 
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
-    model.addAttribute("studentDetail", new StudentDetail());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+    model.addAttribute("studentDetail", studentDetail);
     return "registerStudent";
   }
 
@@ -54,11 +57,9 @@ public class StudentController {
     if (result.hasErrors()) {
       return "registerStudent";
     }
-
-    // 受け取ったStudentオブジェクトをそのまま使って保存
-    Student student = studentDetail.getStudent();
-    service.saveStudent(student);
-
+    //①新規受講生情報を登録する処理を実装する。
+    service.registerStudent(studentDetail);
+    //②コース情報も一緒に登録できるように実装する。コース自体は単体でいい。
     return "redirect:/studentList";
   }
 }
