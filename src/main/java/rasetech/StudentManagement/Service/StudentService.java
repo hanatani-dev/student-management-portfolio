@@ -1,6 +1,6 @@
 package rasetech.StudentManagement.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,11 +45,22 @@ public class StudentService {
     repository.registerStudent(studentDetail.getStudent());
 
     // コース情報も登録
-    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) { // 👈 ここで変数名を "studentsCourse" にする
+    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
       studentsCourse.setStudentId(studentDetail.getStudent().getId()); // OK
-      studentsCourse.setStartDataAt(LocalDateTime.now().toLocalDate()); // OK
-      studentsCourse.setEndDataAt(LocalDateTime.now().plusYears(1).toLocalDate()); // OK
+      studentsCourse.setStartDateAt(LocalDate.now());
+      studentsCourse.setEndDateAt(LocalDate.now().plusYears(1));
       repository.registerStudentsCourse(studentsCourse); // OK
+    }
+  }
+
+  @Transactional
+  //学生情報の更新
+  public void updateStudent(StudentDetail studentDetail) {
+    repository.updateStudent(studentDetail.getStudent());
+
+    // コース情報も更新
+    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
+      repository.updateStudentsCourse(studentsCourse); // OK
     }
   }
 
