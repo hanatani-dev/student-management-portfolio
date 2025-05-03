@@ -23,13 +23,19 @@
   <!-- ここにThymeleafでデータを流し込む -->
   <tr th:each="studentDetail : ${studentList}">
     <td th:text="${studentDetail.student.id}">1</td>
-    <td th:text="${studentDetail.student.name}">SakuraMomoko</td>
+
+    <!--htmlの作法。/aタグ。以下4行で、ブラウザのhttp://localhost:8080/studentListの氏名にID追加され、URL検索機能が追加されてる。氏名クリックして検索したらUpdateStudent.htmlにいく。-->
+    <td>
+      <a href="/studentList" th:href="@{/student/{id}(id=${studentDetail.student.id})}"
+         th:text="${studentDetail.student.name}">SakuraMomoko</a>
+    </td>
+
     <td th:text="${studentDetail.student.nickname}">Maru-chan</td>
     <td th:text="${studentDetail.student.email}">Maruko@gmail.com</td>
     <td th:text="${studentDetail.student.area}"> Shizuoka-ken, Shizuoka-shi</td>
     <td th:text="${studentDetail.student.age}">10</td>
     <td th:text="${studentDetail.student.sex}">Female</td>
-    <td th:text="${studentDetail.student.remark != null ? studentDetail.student.remark : ''}"></td>
+    <td th:text="${studentDetail.student.remark}"></td>
   </tr>
   </tbody>
 </table>

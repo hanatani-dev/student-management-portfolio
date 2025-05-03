@@ -35,8 +35,25 @@ public class StudentService {
     return repository.search();
   }
 
+  /**
+   * １．Serviseとしては、画面に入ってきたID情報に基づく特定・単一の受講生情報と、受講生IDに紐づく複数持っているであろうコース情報を取得する（getId)
+   * Repositoryオブジェクトは取得した情報に応じてStudentID変更する。、取得データはStudentDetailにそれぞれ設定して、
+   * controllerオブジェクトに返す＝return
+   *
+   * @param id
+   * @return
+   */
+  public StudentDetail searchStudent(String id) {
+    Student student = repository.searchStudent(id);
+    List<StudentsCourses> studentsCourses = repository.searchStudentsCourse(student.getId());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentsCourses(studentsCourses);
+    return studentDetail;
+  }
+
   public List<StudentsCourses> searchStudentsCourseList() {
-    return repository.searchStudentsCourses();
+    return repository.searchStudentsCoursesList();
   }
 
   @Transactional
@@ -49,6 +66,19 @@ public class StudentService {
       studentsCourse.setCourseStartAt(LocalDateTime.now());
       studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
       repository.registerStudentsCourses(studentsCourse);
+    }
+  }
+
+  /**
+   * 各コース名、一つだけ名前変えるとき、Serviseではリストで入ってくる。
+   */
+  @Transactional
+  public void updateStudent(StudentDetail studentDetail) {
+    repository.updateStudent(studentDetail.getStudent());
+
+    // コース情報更新
+    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
+      repository.updateStudentsCourses(studentsCourse);
     }
   }
 }

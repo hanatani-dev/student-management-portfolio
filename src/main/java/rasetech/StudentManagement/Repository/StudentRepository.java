@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import rasetech.StudentManagement.Data.Student;
 import rasetech.StudentManagement.Data.StudentsCourses;
 
@@ -30,8 +31,20 @@ public interface StudentRepository {
   @Select("SELECT * FROM students")
   List<Student> search();//searchでリファクタリングして、シグネチャーの変更で「String name」消した。
 
+  @Select("SELECT * FROM students WHERE id = #{id}")
+  Student searchStudent(String id);
+
   @Select("SELECT * FROM students_courses")
-  List<StudentsCourses> searchStudentsCourses();
+  List<StudentsCourses> searchStudentsCoursesList();
+
+  /**
+   * studentIdに基づいて、コース情報を表示するので、契約してるコース情報が２つ以上のこともあり得るので、Listで複数検索できるようにしとく。
+   *
+   * @param stdentId
+   * @return
+   */
+  @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
+  List<StudentsCourses> searchStudentsCourse(String stdentId);
 
   // 学生情報の保存
   @Insert(
@@ -44,4 +57,17 @@ public interface StudentRepository {
       + "VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void registerStudentsCourses(StudentsCourses studentsCourses);
+
+  /**
+   * @param student
+   */
+
+  @Update("UPDATE students SET name = #{name}, nickname = #{nickname},"
+      + "email = #{email}, area = #{area}, age = #{age}, sex = #{sex}, remark = #{remark}, is_deleted = #{isDeleted} WHERE id = #{id}")
+  void updateStudent(Student student);
+
+  @Update("UPDATE students_courses SET course_name = #{courseName} WHERE id = #{id}")
+  void updateStudentsCourses(StudentsCourses studentsCourses);
+  //WHERE id・・・ひとつのコース名だけ、変更するってこと。
+  // もしWHERE studentID＝とかにした場合：２つコース受けてて、ブラウザ更新画面でコース名Javaにしたら、受講してる２つのコース名とも、Javaになってしまう。
 }
