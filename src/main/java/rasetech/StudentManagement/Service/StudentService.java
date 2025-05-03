@@ -1,6 +1,6 @@
 package rasetech.StudentManagement.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,33 +35,50 @@ public class StudentService {
     return repository.search();
   }
 
-  public List<StudentsCourses> searchStudentsCoursesList() {
-    return repository.searchStudentsCourses();
+  /**
+   * １．Serviseとしては、画面に入ってきたID情報に基づく特定・単一の受講生情報と、受講生IDに紐づく複数持っているであろうコース情報を取得する（getId)
+   * Repositoryオブジェクトは取得した情報に応じてStudentID変更する。、取得データはStudentDetailにそれぞれ設定して、
+   * controllerオブジェクトに返す＝return
+   *
+   * @param id
+   * @return
+   */
+  public StudentDetail searchStudent(String id) {
+    Student student = repository.searchStudent(id);
+    List<StudentsCourses> studentsCourses = repository.searchStudentsCourse(student.getId());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentsCourses(studentsCourses);
+    return studentDetail;
+  }
+
+  public List<StudentsCourses> searchStudentsCourseList() {
+    return repository.searchStudentsCoursesList();
   }
 
   @Transactional
   public void registerStudent(StudentDetail studentDetail) {
-    // まず学生を登録（これで student.id が生成される）
     repository.registerStudent(studentDetail.getStudent());
 
-    // コース情報も登録
+    // コース情報登録
     for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
-      studentsCourse.setStudentId(studentDetail.getStudent().getId()); // OK
-      studentsCourse.setStartDateAt(LocalDate.now());
-      studentsCourse.setEndDateAt(LocalDate.now().plusYears(1));
-      repository.registerStudentsCourse(studentsCourse); // OK
+      studentsCourse.setStudentId(studentDetail.getStudent().getId());
+      studentsCourse.setCourseStartAt(LocalDateTime.now());
+      studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
+      repository.registerStudentsCourses(studentsCourse);
     }
   }
 
+  /**
+   * 各コース名、一つだけ名前変えるとき、Serviseではリストで入ってくる。
+   */
   @Transactional
-  //学生情報の更新
   public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
 
-    // コース情報も更新
+    // コース情報更新
     for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
-      repository.updateStudentsCourse(studentsCourse); // OK
+      repository.updateStudentsCourses(studentsCourse);
     }
   }
-
 }
