@@ -1,8 +1,11 @@
 package rasetech.StudentManagement.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import rasetech.Domain.StudentDetail;
 import rasetech.StudentManagement.Data.Student;
 import rasetech.StudentManagement.Data.StudentsCourses;
 import rasetech.StudentManagement.Repository.StudentRepository;
@@ -28,16 +31,24 @@ public class StudentService {
     this.repository = repository;
   }
 
-  // 学生情報をデータベースに保存するメソッド
-  public void saveStudent(Student student) {
-    repository.save(student);  // Studentをデータベースに保存
-  }
-
   public List<Student> searchStudentList() {
     return repository.search();
   }
 
-  public List<StudentsCourses> searchStudentsCoursesList() {
+  public List<StudentsCourses> searchStudentsCourseList() {
     return repository.searchStudentsCourses();
+  }
+
+  @Transactional
+  public void registerStudent(StudentDetail studentDetail) {
+    repository.registerStudent(studentDetail.getStudent());
+
+    // コース情報登録
+    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
+      studentsCourse.setStudentId(studentDetail.getStudent().getId());
+      studentsCourse.setCourseStartAt(LocalDateTime.now());
+      studentsCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
+      repository.registerStudentsCourses(studentsCourse);
+    }
   }
 }

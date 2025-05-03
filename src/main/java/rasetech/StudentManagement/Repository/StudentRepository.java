@@ -3,6 +3,7 @@ package rasetech.StudentManagement.Repository;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import rasetech.StudentManagement.Data.Student;
 import rasetech.StudentManagement.Data.StudentsCourses;
@@ -33,6 +34,14 @@ public interface StudentRepository {
   List<StudentsCourses> searchStudentsCourses();
 
   // 学生情報の保存
-  @Insert("INSERT INTO students (name) VALUES (#{name})")
-  void save(Student student);
+  @Insert(
+      "INSERT INTO students(name,nickname, email, area, age, sex,remark,is_deleted)"
+          + " VALUES(#{name}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void registerStudent(Student student);
+
+  @Insert("INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at) "
+      + "VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void registerStudentsCourses(StudentsCourses studentsCourses);
 }

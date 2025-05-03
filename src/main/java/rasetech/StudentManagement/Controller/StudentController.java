@@ -1,5 +1,6 @@
 package rasetech.StudentManagement.Controller;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class StudentController {
   @GetMapping("/studentList")
   public String getStudentList(Model model) {
     List<Student> students = service.searchStudentList();
-    List<StudentsCourses> studentsCourses = service.searchStudentsCoursesList();
+    List<StudentsCourses> studentsCourses = service.searchStudentsCourseList();
 
     model.addAttribute("studentList", converter.convertStudentDetails(students, studentsCourses));
     return "studentList";
@@ -40,27 +41,23 @@ public class StudentController {
 
   @GetMapping("/studentsCourseList")
   public List<StudentsCourses> getStudentsCoursesList() {
-    return service.searchStudentsCoursesList();
+    return service.searchStudentsCourseList();
   }
 
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
-    model.addAttribute("studentDetail", new StudentDetail());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+    model.addAttribute("studentDetail", studentDetail);
     return "registerStudent";
   }
+
 
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     if (result.hasErrors()) {
       return "registerStudent"; // バリデーションエラーがある場合、フォームに戻る
     }
-
-    // 新しいStudentオブジェクトを作成し、学生情報を設定
-    Student student = new Student();
-    student.setName(studentDetail.getStudent().getName());  // 必要な情報を設定
-
-    // Serviceクラスを使用して学生情報を保存
-    service.saveStudent(student);
 
     // 学生リストにリダイレクト
     return "redirect:/studentList";
