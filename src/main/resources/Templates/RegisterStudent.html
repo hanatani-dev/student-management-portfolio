@@ -5,7 +5,7 @@
 </head>
 <body>
 <h1>Student Registration</h1>
-<form th:action="@{/registerStudent}" th:object="${studentDetail}" method="post">
+<div th:action="@{/registerStudent}" th:object="${studentDetail}" method="post">
   <div>
     <label for="name">Name:</label>
     <input type="text" id="name" th:field="*{student.name}" required/>
@@ -16,7 +16,7 @@
   </div>
   <div>
     <label for="email">Email:</label>
-    <input type="email" id="email" th:field="*{student.email}" required/>
+    <input type="text" id="email" th:field="*{student.email}" required/>
   </div>
   <div>
     <label for="area">Area:</label>
@@ -24,25 +24,23 @@
   </div>
   <div>
     <label for="age">Age:</label>
-    <input type="number" id="age" th:field="*{student.age}" />
+    <input type="text" id="age" th:field="*{student.age}"/>
   </div>
   <div>
     <label for="sex">Sex:</label>
-    <select id="sex" th:field="*{student.sex}" />
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="Others">Others</option>
-    </select>
+    <input type="text" id="sex" th:field="*{student.sex}"/>
   </div>
   <div>
     <label for="remark">Remark:</label>
-    <input type="text" id="remark" th:field="*{student.remark}" />
+    <input type="text" id="remark" th:field="*{student.remark}"/>
   </div>
   <div th:each="course, stat : *{studentsCourses}">
-    <label for="courseName">StudentCourseName:</label>
-    <input type="text" th:field="*{studentsCourses[__${stat.index}__].courseName}" />
+    <label for="courseName"> StudentCourseName:</label>
+    <input type="text" id="courseName"
+           th:id="studentCourse.__${stat.index}__.courseName"
+           th:field="*{studentsCourses[__${stat.index}__].courseName}" />
   </div>
-  <div>
-    <button type="submit">Register</button>
+     <button type="submit">Register</button>
   </div>
-</form>
+ </form>
+</body>

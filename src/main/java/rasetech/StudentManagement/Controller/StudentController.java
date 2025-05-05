@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import rasetech.Domain.StudentDetail;
 import rasetech.StudentManagement.Controller.Converter.StudentConverter;
@@ -33,16 +34,34 @@ public class StudentController {
   @GetMapping("/studentList")
   public String getStudentList(Model model) {
     List<Student> students = service.searchStudentList();
-    List<StudentsCourses> studentsCourses = service.searchStudentsCoursesList();
+    List<StudentsCourses> studentsCourses = service.searchStudentsCourseList();
 
     model.addAttribute("studentList", converter.convertStudentDetails(students, studentsCourses));
     return "studentList";
   }
 
-  @GetMapping("/studentsCourseList")
-  public List<StudentsCourses> getStudentsCoursesList() {
-    return service.searchStudentsCoursesList();
+  /**
+   * ２．１．でServiseオブジェクトから返されたら、StudentDetailからの情報を、画面に出力する。
+   *
+   * @return 更新画面にいくっていうとこ、Java授業内で一番難しい！
+   */
+  @GetMapping("/student/{id}")
+  public String getStudent(@PathVariable String id, Model model) {
+    StudentDetail studentDetail = service.searchStudent(id);
+
+    // ★ログ出力
+    System.out.println("Courses size: " + (studentDetail.getStudentsCourses() != null
+        ? studentDetail.getStudentsCourses().size() : "null"));
+
+    model.addAttribute("studentDetail", studentDetail);
+    return "updateStudent";
   }
+
+  /**
+   * ↑のUpdateStudentで、UpdateStudent.htmlに紐づけてる。検索してきた結果をUpdateStudent.htmlに当てはめてる。
+   * 動きとしては、RegisterStudent.htmlと同じ。更新ボタン押したとき動かす先がUpdateStudent.htmlに行くだけ。。
+   */
+
 
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
@@ -52,14 +71,27 @@ public class StudentController {
     return "registerStudent";
   }
 
+
   @PostMapping("/registerStudent")
   public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
     if (result.hasErrors()) {
-      return "registerStudent";
+      return "registerStudent"; // バリデーションエラーがある場合、フォームに戻る
     }
-    //①新規受講生情報を登録する処理を実装する。
+    // 学生リストにリダイレクト
     service.registerStudent(studentDetail);
-    //②コース情報も一緒に登録できるように実装する。コース自体は単体でいい。
+    return "redirect:/studentList";
+  }
+
+  /**
+   *
+   */
+  @PostMapping("/updateStudent")
+  public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+    if (result.hasErrors()) {
+      return "updateStudent"; // バリデーションエラーがある場合、フォームに戻る
+    }
+    // 学生リストに更新
+    service.updateStudent(studentDetail);
     return "redirect:/studentList";
   }
 }
