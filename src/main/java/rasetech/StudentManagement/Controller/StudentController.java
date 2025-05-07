@@ -36,7 +36,13 @@ public class StudentController {
     List<Student> students = service.searchStudentList();
     List<StudentsCourses> studentsCourses = service.searchStudentsCourseList();
 
-    model.addAttribute("studentList", converter.convertStudentDetails(students, studentsCourses));
+    // ✅ isDeleted==false な受講生だけフィルター
+    List<Student> activeStudents = students.stream()
+        .filter(student -> !student.isDeleted())  // isDeleted が false（未キャンセル）だけ表示
+        .toList();
+
+    model.addAttribute("studentList",
+        converter.convertStudentDetails(activeStudents, studentsCourses));
     return "studentList";
   }
 
