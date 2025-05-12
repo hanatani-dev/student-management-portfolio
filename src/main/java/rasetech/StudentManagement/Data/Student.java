@@ -17,3 +17,6 @@ public class Student {//MySQLの、Student＿ManagementのDatebaseの中につ�
   private String remark;//備考欄
   private boolean isDeleted;//論理削除＝授業終了／解約後にsqlで検索にでてこないようにする。　物理削除＝データ削除・復元不可能
 }
+
+
+
