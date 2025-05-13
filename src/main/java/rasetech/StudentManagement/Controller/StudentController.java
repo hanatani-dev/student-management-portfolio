@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +44,7 @@ public class StudentController {
     return converter.convertStudentDetails(activeStudents, studentsCourses);
   }
 
-  @GetMapping("/student/{id}")
+  @GetMapping("/student/{id}")//単一検索できる！PostmanでID検索したみたいに！
   public StudentDetail getStudent(@PathVariable String id) {
     return service.searchStudent(id);
   }
@@ -61,19 +59,16 @@ public class StudentController {
 
 
   @PostMapping("/registerStudent")
-  public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
-    if (result.hasErrors()) {
-      return "registerStudent"; // バリデーションエラーがある場合、フォームに戻る
-    }
+  public ResponseEntity<String> registerStudent(@RequestBody StudentDetail studentDetail) {
     // 学生リストにリダイレクト
     service.registerStudent(studentDetail);
-    return "redirect:/studentList";
+    return ResponseEntity.ok("登録処理が成功しました。");
   }
 
   @PostMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
     // 学生リストに更新
     service.updateStudent(studentDetail);
-    return ResponseEntity.ok("The update process was successful.");
+    return ResponseEntity.ok("更新処理が成功しました。");
   }
 }
