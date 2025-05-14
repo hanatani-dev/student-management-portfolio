@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import rasetech.Domain.StudentDetail;
-import rasetech.StudentManagement.Controller.Converter.StudentConverter;
-import rasetech.StudentManagement.Data.Student;
-import rasetech.StudentManagement.Data.StudentsCourses;
 import rasetech.StudentManagement.Service.StudentService;
 
 /**
@@ -24,21 +21,12 @@ public class StudentController {
    * 　受講生サービス
    */
   private StudentService service;
-  /**
-   * 　受講生コンバーター
-   */
-  private StudentConverter converter;
 
-  /**
-   * コンストラクタ
-   *
-   * @param service   　受講生サービス
-   * @param converter 　受講生コンバーター
-   */
+
   @Autowired
-  public StudentController(StudentService service, StudentConverter converter) {
+  public StudentController(StudentService service) {
     this.service = service;
-    this.converter = converter;
+
   }
 
   /**
@@ -47,16 +35,8 @@ public class StudentController {
    * @return 受講生一覧（全件）
    */
   @GetMapping("/studentList")
-  public List getStudentList() {
-    List<Student> students = service.searchStudentList();
-    List<StudentsCourses> studentsCourses = service.searchStudentsCourseList();
-
-    // ✅ isDeleted==false な受講生だけフィルター
-    List<Student> activeStudents = students.stream()
-        .filter(student -> !student.isDeleted())  // isDeleted が false（未キャンセル）だけ表示
-        .toList();
-
-    return converter.convertStudentDetails(activeStudents, studentsCourses);
+  public List<StudentDetail> getStudentList() {
+    return service.searchStudentList();
   }
 
   /**

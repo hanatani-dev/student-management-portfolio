@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rasetech.Domain.StudentDetail;
+import rasetech.StudentManagement.Controller.Converter.StudentConverter;
 import rasetech.StudentManagement.Data.Student;
 import rasetech.StudentManagement.Data.StudentsCourses;
 import rasetech.StudentManagement.Repository.StudentRepository;
@@ -17,10 +18,12 @@ import rasetech.StudentManagement.Repository.StudentRepository;
 public class StudentService {
 
   private StudentRepository repository;
+  private StudentConverter converter;
 
   @Autowired
-  public StudentService(StudentRepository repository) {
+  public StudentService(StudentRepository repository, StudentConverter converter) {
     this.repository = repository;
+    this.converter = converter;
   }
 
   /**
@@ -28,8 +31,10 @@ public class StudentService {
    *
    * @return　受講生一覧（全件）
    */
-  public List<Student> searchStudentList() {
-    return repository.search();
+  public List<StudentDetail> searchStudentList() {
+    List<Student> studentList = repository.search();
+    List<StudentsCourses> studentsCoursesList = repository.searchStudentsCoursesList();//controllerの全件検索をServiseで行う。
+    return converter.convertStudentDetails(studentList, studentsCoursesList);
   }
 
   /**
