@@ -68,6 +68,6 @@ public class StudentController {
   public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
     // 学生リストに更新
     service.updateStudent(studentDetail);
-    return ResponseEntity.ok("The update process was successful.");
+    return ResponseEntity.ok("更新処理は成功しました.");
   }
 }
