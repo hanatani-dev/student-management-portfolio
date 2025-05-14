@@ -51,10 +51,7 @@ public class StudentService {
     studentDetail.setStudentsCourses(studentsCourses);
     return studentDetail;
   }
-
-  public List<StudentsCourses> searchStudentsCourseList() {
-    return repository.searchStudentsCoursesList();
-  }
+  
 
   @Transactional
   public StudentDetail registerStudent(StudentDetail studentDetail) {
