@@ -59,10 +59,10 @@ public class StudentController {
 
 
   @PostMapping("/registerStudent")
-  public ResponseEntity<String> registerStudent(@RequestBody StudentDetail studentDetail) {
+  public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
     // 学生リストにリダイレクト
-    service.registerStudent(studentDetail);
-    return ResponseEntity.ok("登録処理が成功しました。");
+    StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
+    return ResponseEntity.ok(responseStudentDetail);
   }
 
   @PostMapping("/updateStudent")
