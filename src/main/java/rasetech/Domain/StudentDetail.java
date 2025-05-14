@@ -13,7 +13,7 @@ public class StudentDetail {
   private Student student;
   private List<StudentsCourses> studentsCourses;
   /**
-   * StudentsCoursesオブジェクトは、Studentオブジェクトに対して、絶対複数になるので、List使う！
+   * StudentsCoursesオブジェクトは、Studentオブジェクトに対して、複数コース受講してることあるはず。List使う！
    */
 
 

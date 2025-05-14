@@ -10,38 +10,44 @@ import rasetech.StudentManagement.Data.Student;
 import rasetech.StudentManagement.Data.StudentsCourses;
 
 /**
- * 受講生情報を扱うリポジトリ 全件検索や単一条件での検索、コース情報の検索が行えるクラスです。
- */
-
-/**
- * ③　Serviceオブジェクトでドメイン処理とか終わったら、このRepositoryオブジェクト（Datebase）に対して検索処理を渡す。
- * Repositoryオブジェクトでは、DatebaseにアクセスしてSQLを発行して、その結果を呼び出すのだけを担ってる。
- * <p>
- * 以下に書いてあるinterface=このオブジェクトに処理を入れれない。実装は何も書けない。
+ * 受講生テーブルと受講生コース情報テーブルと紐づくRepositoryです。
  */
 
 @Mapper
 public interface StudentRepository {
 
   /**
-   * 全件検索します。
+   * 受講生の全件検索を行います。
    *
-   * @return　全件検索した受講生情報の一覧
+   * @return　受講生一覧（全件）
    */
   @Select("SELECT * FROM students")
-  List<Student> search();//searchでリファクタリングして、シグネチャーの変更で「String name」消した。
+  List<Student> search();
+
+  /**
+   * 受講生の検索を行います。
+   *
+   * @param id 　受講生ID
+   * @return　受講生
+   */
 
   @Select("SELECT * FROM students WHERE id = #{id}")
   Student searchStudent(String id);
+
+  /**
+   * 受講生のコース情報の全件検索を行います。
+   *
+   * @return　受講生のコース情報（全件）
+   */
 
   @Select("SELECT * FROM students_courses")
   List<StudentsCourses> searchStudentsCoursesList();
 
   /**
-   * studentIdに基づいて、コース情報を表示するので、契約してるコース情報が２つ以上のこともあり得るので、Listで複数検索できるようにしとく。
+   * 受講生Idに紐づく受講生コース情報を検索します。
    *
-   * @param stdentId
-   * @return
+   * @param stdentId 　受講生ID
+   * @return　受講生IDに紐づく受講生コース情報
    */
   @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
   List<StudentsCourses> searchStudentsCourse(String stdentId);

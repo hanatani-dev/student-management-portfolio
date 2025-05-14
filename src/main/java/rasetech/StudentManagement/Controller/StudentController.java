@@ -15,20 +15,37 @@ import rasetech.StudentManagement.Data.StudentsCourses;
 import rasetech.StudentManagement.Service.StudentService;
 
 /**
- * ①　まず、Controllerオブジェクトには、リクエスト飛んでくる。ここで、レスポンス処理とかする。
+ * 以下、運用する人に見せるのか、チームメンバーに見せるのか、で、 受講生の検索や登録、更新などを行うREST　APIとして受け付けるControllerです。
  */
 @RestController//メインオブジェクトで作業してたControllerを、このオブジェクトに分ける。
 public class StudentController {
 
+  /**
+   * 　受講生サービス
+   */
   private StudentService service;
+  /**
+   * 　受講生コンバーター
+   */
   private StudentConverter converter;
 
+  /**
+   * コンストラクタ
+   *
+   * @param service   　受講生サービス
+   * @param converter 　受講生コンバーター
+   */
   @Autowired
   public StudentController(StudentService service, StudentConverter converter) {
     this.service = service;
     this.converter = converter;
   }
 
+  /**
+   * 受講生一覧検索です。 全件検索を行うので、条件指定は行わないものになります。
+   *
+   * @return 受講生一覧（全件）
+   */
   @GetMapping("/studentList")
   public List getStudentList() {
     List<Student> students = service.searchStudentList();
@@ -42,6 +59,12 @@ public class StudentController {
     return converter.convertStudentDetails(activeStudents, studentsCourses);
   }
 
+  /**
+   * 受講生検索です。 IDに紐づく任意の情報を取得します。
+   *
+   * @param id 　受講生ID
+   * @return　受講生
+   */
   @GetMapping("/student/{id}")//単一検索できる！PostmanでID検索したみたいに！
   public StudentDetail getStudent(@PathVariable String id) {
     return service.searchStudent(id);

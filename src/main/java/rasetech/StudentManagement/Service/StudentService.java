@@ -11,15 +11,7 @@ import rasetech.StudentManagement.Data.StudentsCourses;
 import rasetech.StudentManagement.Repository.StudentRepository;
 
 /**
- * 単一責任の原則。メインオブジェクトの、リクエスト処理してるControllerと、Serviceの業務処理がごっちゃにならないように、オブジェクト分ける。
- * 一度Controllerと同じオブジェクトで業務処理のコード書いてしまえば、後できれいに整理するとかができない！
- */
-
-/**
- * ②　Controllerオブジェクトにリクエストがとんできたら、Serviceオブジェクトに来る。 Serviceオブジェクトの中で、ドメイン処理や業務処理を行う。
- * <p>
- * ④　Repositoryオブジェクトから返ってきたSQLの結果を、またこのServiceオブジェクトで受け取って、
- * Serviceオブジェクトでまた処理が必要であれば、行われてから、Controllerオブジェクトに処理されたものが返る。
+ * 受講生情報を取り扱うサービスです。受講生の検索や登録・更新処理を行います。
  */
 @Service
 public class StudentService {
@@ -31,17 +23,20 @@ public class StudentService {
     this.repository = repository;
   }
 
+  /**
+   * 受講生一覧検索です。全件検索を行うので、条件指定は行いません。
+   *
+   * @return　受講生一覧（全件）
+   */
   public List<Student> searchStudentList() {
     return repository.search();
   }
 
   /**
-   * １．Serviseとしては、画面に入ってきたID情報に基づく特定・単一の受講生情報と、受講生IDに紐づく複数持っているであろうコース情報を取得する（getId)
-   * Repositoryオブジェクトは取得した情報に応じてStudentID変更する。、取得データはStudentDetailにそれぞれ設定して、
-   * controllerオブジェクトに返す＝return
+   * 受講生検索です。IDに紐づく受講生情報を取得したあと、その受講生に紐づく受講生コース情報を取得して設定します。・・・処理の詳細も書く。
    *
-   * @param id
-   * @return
+   * @param id 　受講生ID
+   * @return　受講生情報
    */
   public StudentDetail searchStudent(String id) {
     Student student = repository.searchStudent(id);
