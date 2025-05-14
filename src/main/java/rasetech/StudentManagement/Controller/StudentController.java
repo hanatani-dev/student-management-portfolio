@@ -1,10 +1,8 @@
 package rasetech.StudentManagement.Controller;
 
-import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,20 +47,13 @@ public class StudentController {
     return service.searchStudent(id);
   }
 
-  @GetMapping("/newStudent")
-  public String newStudent(Model model) {
-    StudentDetail studentDetail = new StudentDetail();
-    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
-    model.addAttribute("studentDetail", studentDetail);
-    return "registerStudent";
-  }
-
 
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
     // 学生リストにリダイレクト
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
-    return ResponseEntity.ok(responseStudentDetail);
+    return ResponseEntity.ok(
+        responseStudentDetail);//Postmanでの受講生登録時、自動登録されたIDも登録画面に出るようにした。DBに見に行くのは手間なので。
   }
 
   @PostMapping("/updateStudent")
