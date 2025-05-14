@@ -1,51 +1,53 @@
 plugins {//この画面は、プログラムのバージョンアップするときなどに使い、開発時はあまり使わない。
-	id 'java'
-	id 'war'
-	id 'org.springframework.boot' version '3.4.3'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '3.4.3'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'rasetech'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 configurations {//第10回で追加。
-	compileOnly {
-		extendsFrom annotationProcessor//この、アノテーションプロセッサー入れるために、ランボックの機能入れる。
-	}
+    compileOnly {
+        extendsFrom annotationProcessor//この、アノテーションプロセッサー入れるために、ランボックの機能入れる。
+    }
 }
 
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'//プログラム実行するとき使う
+    implementation 'org.springframework.boot:spring-boot-starter-web'//プログラム実行するとき使う
 
-	//便利機能、ユーティリティ
-	//「apache.commons lang」アパッチ コモンズ ラング　= 便利機能、ユーティリティ
-	implementation 'org.apache.commons:commons-lang3:3.17.0'
-	// Lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    //便利機能、ユーティリティ
+    //thymeleaf*なぜか毎回消える
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // ←これ入れる！！
+    //「apache.commons lang」アパッチ コモンズ ラング　= 便利機能、ユーティリティ
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	//MySQLドライバ
-	runtimeOnly	'com.mysql:mysql-connector-j'
+    //MySQLドライバ
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
-	//MyBatis
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+    //MyBatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'//プログラム実行するとき”のみ”使う
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'//testするときだけ使う
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'//プログラム実行するとき”のみ”使う
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'//testするときだけ使う
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {//グレイドルに”test”を追加できる　
-	useJUnitPlatform()//
+    useJUnitPlatform()//
 }
