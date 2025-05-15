@@ -33,8 +33,8 @@ public class StudentService {
    */
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
-    List<StudentCourse> studentCoursesList = repository.searchStudentsCoursesList();//controllerの全件検索をServiseで行う。
-    return converter.convertStudentDetails(studentList, studentCoursesList);
+    List<StudentCourse> studentCourseList = repository.searchStudentsCoursesList();//controllerの全件検索をServiseで行う。
+    return converter.convertStudentDetails(studentList, studentCourseList);
   }
 
   /**
@@ -45,8 +45,8 @@ public class StudentService {
    */
   public StudentDetail searchStudent(String id) {
     Student student = repository.searchStudent(id);
-    List<StudentCourse> studentCours = repository.searchStudentsCourse(student.getId());
-    return new StudentDetail(student, studentCours);
+    List<StudentCourse> studentCourse = repository.searchStudentsCourse(student.getId());
+    return new StudentDetail(student, studentCourse);
   }
 
   /**
@@ -62,7 +62,7 @@ public class StudentService {
     repository.registerStudent(student);
 
     // やりたいことをやる
-    studentDetail.getStudentCours().forEach(studentCourse -> {
+    studentDetail.getStudentCourseList().forEach(studentCourse -> {
       initStudentsCourse(studentCourse, student);
       repository.registerStudentsCourses(studentCourse);
     });
@@ -91,7 +91,7 @@ public class StudentService {
     repository.updateStudent(studentDetail.getStudent());
 
     // コース情報更新
-    for (StudentCourse studentCourse : studentDetail.getStudentCours()) {
+    for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
       repository.updateStudentsCourses(studentCourse);
     }
   }
