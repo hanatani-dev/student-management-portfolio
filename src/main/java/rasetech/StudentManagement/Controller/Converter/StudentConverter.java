@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import rasetech.Domain.StudentDetail;
 import rasetech.StudentManagement.Data.Student;
-import rasetech.StudentManagement.Data.StudentsCourse;
+import rasetech.StudentManagement.Data.StudentCourse;
 
 /**
  * 受講生詳細を受講生や受講生コース情報、もしくはその逆の変換を行うコンバーターです。＝controllerだけで使われるわけではないと、断言できる。
@@ -18,23 +18,23 @@ public class StudentConverter {
   /**
    * 受講生に紐づく受講生コース情報をマッピングする。 受講生コース情報は受講生に対して複数存在するので、ループを回して受講生詳細情報を組み立てる。
    *
-   * @param students        受講生一覧
-   * @param studentsCourses 　受講生コース情報のリスト…ここでリストっていうことで、名前付けどうなのかとかも見える。
+   * @param students     受講生一覧
+   * @param studentCours 　受講生コース情報のリスト…ここでリストっていうことで、名前付けどうなのかとかも見える。
    * @return　受講生詳細情報のリスト
    */
 
   public List<StudentDetail> convertStudentDetails(List<Student> students,
-      List<StudentsCourse> studentsCourses) {
+      List<StudentCourse> studentCours) {
     List<StudentDetail> studentDetails = new ArrayList<>();
     students.forEach(student -> {
       StudentDetail studentDetail = new StudentDetail();
       studentDetail.setStudent(student);
 
-      List<StudentsCourse> convertStudentCourses = studentsCourses.stream()
+      List<StudentCourse> convertStudentCourses = studentCours.stream()
           .filter(studentCourse -> student.getId().equals(studentCourse.getStudentId()))
           .collect(Collectors.toList());//全件検索を絞りこむため。
 
-      studentDetail.setStudentsCourses(convertStudentCourses);
+      studentDetail.setStudentCours(convertStudentCourses);
       studentDetails.add(studentDetail);
     });
     return studentDetails;

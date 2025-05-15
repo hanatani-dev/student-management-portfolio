@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import rasetech.StudentManagement.Data.Student;
-import rasetech.StudentManagement.Data.StudentsCourse;
+import rasetech.StudentManagement.Data.StudentCourse;
 
 /**
  * 受講生テーブルと受講生コース情報テーブルと紐づくRepositoryです。
@@ -41,7 +41,7 @@ public interface StudentRepository {
    */
 
   @Select("SELECT * FROM students_courses")
-  List<StudentsCourse> searchStudentsCoursesList();
+  List<StudentCourse> searchStudentsCoursesList();
 
   /**
    * 受講生Idに紐づく受講生コース情報を検索します。
@@ -50,7 +50,7 @@ public interface StudentRepository {
    * @return　受講生IDに紐づく受講生コース情報
    */
   @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
-  List<StudentsCourse> searchStudentsCourse(String stdentId);
+  List<StudentCourse> searchStudentsCourse(String stdentId);
 
   /**
    * 受講生を新規登録します。 IDに関しては自動採番を行う。
@@ -68,13 +68,13 @@ public interface StudentRepository {
   /**
    * 受講生コース情報を新規登録します。 IDに関しては自動採番を行う。
    *
-   * @param studentsCourses 　受講生コース情報
+   * @param studentCourses 　受講生コース情報
    */
 
   @Insert("INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at) "
       + "VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
-  void registerStudentsCourses(StudentsCourse studentsCourses);
+  void registerStudentsCourses(StudentCourse studentCourses);
 
   /**
    * @param student
@@ -85,7 +85,7 @@ public interface StudentRepository {
   void updateStudent(Student student);
 
   @Update("UPDATE students_courses SET course_name = #{courseName} WHERE id = #{id}")
-  void updateStudentsCourses(StudentsCourse studentsCourses);
+  void updateStudentsCourses(StudentCourse studentCourses);
   //WHERE id・・・ひとつのコース名だけ、変更するってこと。
   // もしWHERE studentID＝とかにした場合：２つコース受けてて、ブラウザ更新画面でコース名Javaにしたら、受講してる２つのコース名とも、Javaになってしまう。
 }
