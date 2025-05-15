@@ -77,13 +77,20 @@ public interface StudentRepository {
   void registerStudentCourse(StudentCourse studentCourse);
 
   /**
-   * @param student
+   * 受講生を更新します。
+   *
+   * @param student 　受講生
    */
 
   @Update("UPDATE students SET name = #{name}, nickname = #{nickname},"
       + "email = #{email}, area = #{area}, age = #{age}, sex = #{sex}, remark = #{remark}, is_deleted = #{isDeleted} WHERE id = #{id}")
   void updateStudent(Student student);
 
+  /**
+   * 受講生コース情報のコース名を更新します。
+   *
+   * @param studentCourse 　受講生コース情報
+   */
   @Update("UPDATE students_courses SET course_name = #{courseName} WHERE id = #{id}")
   void updateStudentCourse(StudentCourse studentCourse);
   //WHERE id・・・ひとつのコース名だけ、変更するってこと。
