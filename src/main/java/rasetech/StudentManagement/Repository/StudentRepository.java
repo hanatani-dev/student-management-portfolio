@@ -41,7 +41,7 @@ public interface StudentRepository {
    */
 
   @Select("SELECT * FROM students_courses")
-  List<StudentCourse> searchStudentsCoursesList();
+  List<StudentCourse> searchStudentCourseList();
 
   /**
    * 受講生Idに紐づく受講生コース情報を検索します。
@@ -50,7 +50,7 @@ public interface StudentRepository {
    * @return　受講生IDに紐づく受講生コース情報
    */
   @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
-  List<StudentCourse> searchStudentsCourse(String stdentId);
+  List<StudentCourse> searchStudentCourse(String stdentId);
 
   /**
    * 受講生を新規登録します。 IDに関しては自動採番を行う。
@@ -68,13 +68,13 @@ public interface StudentRepository {
   /**
    * 受講生コース情報を新規登録します。 IDに関しては自動採番を行う。
    *
-   * @param studentCourses 　受講生コース情報
+   * @param studentCourse 　受講生コース情報
    */
 
   @Insert("INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at) "
       + "VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
-  void registerStudentsCourses(StudentCourse studentCourses);
+  void registerStudentCourse(StudentCourse studentCourse);
 
   /**
    * @param student
@@ -85,7 +85,7 @@ public interface StudentRepository {
   void updateStudent(Student student);
 
   @Update("UPDATE students_courses SET course_name = #{courseName} WHERE id = #{id}")
-  void updateStudentsCourses(StudentCourse studentCourses);
+  void updateStudentCourse(StudentCourse studentCourse);
   //WHERE id・・・ひとつのコース名だけ、変更するってこと。
   // もしWHERE studentID＝とかにした場合：２つコース受けてて、ブラウザ更新画面でコース名Javaにしたら、受講してる２つのコース名とも、Javaになってしまう。
 }
