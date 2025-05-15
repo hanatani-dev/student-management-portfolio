@@ -84,15 +84,16 @@ public class StudentService {
   }
 
   /**
-   * 各コース名、一つだけ名前変えるとき、Serviseではリストで入ってくる。
+   * 受講生詳細の更新を行います。 受講生と受講生コース情報をそれぞれ更新します。
+   *
+   * @param studentDetail 　受講生詳細
    */
   @Transactional
   public void updateStudent(StudentDetail studentDetail) {
     repository.updateStudent(studentDetail.getStudent());
 
     // コース情報更新
-    for (StudentCourse studentCourse : studentDetail.getStudentCourseList()) {
-      repository.updateStudentCourse(studentCourse);
-    }
+    studentDetail.getStudentCourseList()
+        .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
   }
 }

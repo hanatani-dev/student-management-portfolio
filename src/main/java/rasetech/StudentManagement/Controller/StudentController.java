@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import rasetech.Domain.StudentDetail;
@@ -64,7 +65,13 @@ public class StudentController {
         responseStudentDetail);//Postmanでの受講生登録時、自動登録されたIDも登録画面に出るようにした。DBに見に行くのは手間なので。
   }
 
-  @PostMapping("/updateStudent")
+  /**
+   * 受講生詳細の更新を行います。キャンセルフラグの更新もここで行います（論理削除）
+   *
+   * @param studentDetail 　受講生詳細
+   * @return　実行結果
+   */
+  @PutMapping("/updateStudent")//Put=全体更新　Patch=部分更新
   public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
     // 学生リストに更新
     service.updateStudent(studentDetail);
