@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rasetech.StudentManagement.Data.Student;
-import rasetech.StudentManagement.Data.StudentsCourses;
+import rasetech.StudentManagement.Data.StudentsCourse;
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ import rasetech.StudentManagement.Data.StudentsCourses;
 public class StudentDetail {
 
   private Student student;
-  private List<StudentsCourses> studentsCourses;
+  private List<StudentsCourse> studentsCourses;
   /**
    * StudentsCoursesオブジェクトは、Studentオブジェクトに対して、複数コース受講してることあるはず。List使う！
    */

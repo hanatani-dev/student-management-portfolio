@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import rasetech.Domain.StudentDetail;
 import rasetech.StudentManagement.Data.Student;
-import rasetech.StudentManagement.Data.StudentsCourses;
+import rasetech.StudentManagement.Data.StudentsCourse;
 
 /**
  * 受講生詳細を受講生や受講生コース情報、もしくはその逆の変換を行うコンバーターです。＝controllerだけで使われるわけではないと、断言できる。
@@ -24,13 +24,13 @@ public class StudentConverter {
    */
 
   public List<StudentDetail> convertStudentDetails(List<Student> students,
-      List<StudentsCourses> studentsCourses) {
+      List<StudentsCourse> studentsCourses) {
     List<StudentDetail> studentDetails = new ArrayList<>();
     students.forEach(student -> {
       StudentDetail studentDetail = new StudentDetail();
       studentDetail.setStudent(student);
 
-      List<StudentsCourses> convertStudentCourses = studentsCourses.stream()
+      List<StudentsCourse> convertStudentCourses = studentsCourses.stream()
           .filter(studentCourse -> student.getId().equals(studentCourse.getStudentId()))
           .collect(Collectors.toList());//全件検索を絞りこむため。
 

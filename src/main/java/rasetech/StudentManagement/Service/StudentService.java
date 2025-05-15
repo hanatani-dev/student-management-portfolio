@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import rasetech.Domain.StudentDetail;
 import rasetech.StudentManagement.Controller.Converter.StudentConverter;
 import rasetech.StudentManagement.Data.Student;
-import rasetech.StudentManagement.Data.StudentsCourses;
+import rasetech.StudentManagement.Data.StudentsCourse;
 import rasetech.StudentManagement.Repository.StudentRepository;
 
 /**
@@ -33,7 +33,7 @@ public class StudentService {
    */
   public List<StudentDetail> searchStudentList() {
     List<Student> studentList = repository.search();
-    List<StudentsCourses> studentsCoursesList = repository.searchStudentsCoursesList();//controllerの全件検索をServiseで行う。
+    List<StudentsCourse> studentsCoursesList = repository.searchStudentsCoursesList();//controllerの全件検索をServiseで行う。
     return converter.convertStudentDetails(studentList, studentsCoursesList);
   }
 
@@ -45,7 +45,7 @@ public class StudentService {
    */
   public StudentDetail searchStudent(String id) {
     Student student = repository.searchStudent(id);
-    List<StudentsCourses> studentsCourses = repository.searchStudentsCourse(student.getId());
+    List<StudentsCourse> studentsCourses = repository.searchStudentsCourse(student.getId());
     return new StudentDetail(student, studentsCourses);
   }
 
@@ -75,9 +75,10 @@ public class StudentService {
    * @param studentsCourse 　受講生コース情報
    * @param student        　受講生
    */
-  private void initStudentsCourse(StudentsCourses studentsCourse, Student student) {
-    studentsCourse.setStudentId(student.getId());
+  private void initStudentsCourse(StudentsCourse studentsCourse, Student student) {
     LocalDateTime now = LocalDateTime.now();
+
+    studentsCourse.setStudentId(student.getId());
     studentsCourse.setCourseStartAt(now);
     studentsCourse.setCourseEndAt(now.plusYears(1));
   }
@@ -90,7 +91,7 @@ public class StudentService {
     repository.updateStudent(studentDetail.getStudent());
 
     // コース情報更新
-    for (StudentsCourses studentsCourse : studentDetail.getStudentsCourses()) {
+    for (StudentsCourse studentsCourse : studentDetail.getStudentsCourses()) {
       repository.updateStudentsCourses(studentsCourse);
     }
   }
