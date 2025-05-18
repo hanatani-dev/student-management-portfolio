@@ -3,13 +3,48 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="rasetech.StudentManagement.Repository.StudentRepository">
 
-  <!--　受講生の全件検索　-->
-  <select id="search" resultType="rasetech.StudentManagement.Data.Student">
-    SELECT * FROM students
+  <!-- 受講生コース情報の全件検索 -->
+  <select id="searchStudentCourseList" resultType="rasetech.StudentManagement.Data.StudentCourse">
+    SELECT * FROM students_courses
   </select>
 
-  <!--　受講生の検索　-->
-  <select id="searchStudent" resultType="rasetech.StudentManagement.Data.Student">
-    SELECT * FROM students WHERE id = #{id}
+  <!-- 受講生IDに紐づくコース情報検索 -->
+  <select id="searchStudentCourse" resultType="rasetech.StudentManagement.Data.StudentCourse">
+    SELECT * FROM students_courses WHERE student_id = #{studentId}
   </select>
+
+  <!-- 受講生の新規登録（IDは自動採番） -->
+  <insert id="registerStudent" useGeneratedKeys="true" keyProperty="id"
+    parameterType="rasetech.StudentManagement.Data.Student">
+    INSERT INTO students(name, nickname, email, area, age, sex, remark, is_deleted)
+    VALUES(#{name}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)
+  </insert>
+
+  <!-- 受講生コース情報の新規登録（IDは自動採番） -->
+  <insert id="registerStudentCourse" useGeneratedKeys="true" keyProperty="id"
+    parameterType="rasetech.StudentManagement.Data.StudentCourse">
+    INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at)
+    VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})
+  </insert>
+
+  <!-- 受講生の更新 -->
+  <update id="updateStudent" parameterType="rasetech.StudentManagement.Data.Student">
+    UPDATE students
+    SET name = #{name},
+    nickname = #{nickname},
+    email = #{email},
+    area = #{area},
+    age = #{age},
+    sex = #{sex},
+    remark = #{remark},
+    is_deleted = #{isDeleted}
+    WHERE id = #{id}
+  </update>
+
+  <!-- 受講生コース情報のコース名更新（IDで指定） -->
+  <update id="updateStudentCourse" parameterType="rasetech.StudentManagement.Data.StudentCourse">
+    UPDATE students_courses
+    SET course_name = #{courseName}
+    WHERE id = #{id}
+  </update>
 </mapper>

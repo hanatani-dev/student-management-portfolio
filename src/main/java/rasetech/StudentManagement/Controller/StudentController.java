@@ -17,7 +17,7 @@ import rasetech.StudentManagement.Service.StudentService;
 /**
  * 以下、運用する人に見せるのか、チームメンバーに見せるのか、で、 受講生の検索や登録、更新などを行うREST　APIとして受け付けるControllerです。
  */
-@Validated
+@Validated//class全体に対して検証を入れる。
 @RestController//メインオブジェクトで作業してたControllerを、このオブジェクトに分ける。
 public class StudentController {
 
