@@ -1,6 +1,5 @@
 package raisetech.StudentManagement.Controller;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,18 +55,16 @@ public class StudentController {
   }
 
   /**
-   * 受講生詳細の登録を行います。
+   * 受講生詳細の登録を行います。登録時だけ、IDは入力しない！（StudentクラスのIDは自動採番されるので）ってしたいので、@ValidationとOnRegister追加。
    *
    * @param studentDetail 　受講生詳細
    * @return　実行結果
    */
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(
-      @Valid @RequestBody StudentDetail studentDetail) {
-    // 学生リストにリダイレクト
+      @Validated(raisetech.StudentManagement.valitaion.OnRegisterStudent.class) @RequestBody StudentDetail studentDetail) {
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
-    return ResponseEntity.ok(
-        responseStudentDetail);//Postmanでの受講生登録時、自動登録されたIDも登録画面に出るようにした。DBに見に行くのは手間なので。
+    return ResponseEntity.ok(responseStudentDetail);
   }
 
   /**
