@@ -26,11 +26,11 @@ repositories {
 }
 
 dependencies {
+    //Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'//プログラム実行するとき使う
-
+    //Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     //便利機能、ユーティリティ
-    //thymeleaf*なぜか毎回消える
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // ←これ入れる！！
     //「apache.commons lang」アパッチ コモンズ ラング　= 便利機能、ユーティリティ
     implementation 'org.apache.commons:commons-lang3:3.17.0'
     // Lombok
