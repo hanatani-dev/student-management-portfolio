@@ -4,18 +4,22 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import raisetech.StudentManagement.valitaion.OnRegisterStudent;
+import raisetech.StudentManagement.validaion.OnRegisterStudent;
+import raisetech.StudentManagement.validaion.OnUpdate;
 
 @Getter
 @Setter
 public class Student {//MySQLの、Student＿ManagementのDatebaseの中につくったTABLE「students」に関連するようにここ作っていく。
   @Null(groups = OnRegisterStudent.class, message = "新規登録時はID不要です。")
-  @Size(max = 100, message = "IDは100文字以内で入力してください。")
+  @NotNull(groups = OnUpdate.class, message = "更新時はIDが必須です。")
+  @Size(max = 100, groups = OnUpdate.class, message = "IDは100文字以内で入力してください。")
+//@Size に groups = OnUpdate.class を追加	登録時に @Size が実行されないようにするため
   private String id;
 
   @NotBlank(message = "名前は必須です。")

@@ -55,14 +55,14 @@ public class StudentController {
   }
 
   /**
-   * 受講生詳細の登録を行います。登録時だけ、IDは入力しない！（StudentクラスのIDは自動採番されるので）ってしたいので、@ValidationとOnRegister追加。
+   * 受講生詳細の登録を行います。登録時だけ、IDは入力しない！（Studentクラス:IDは自動採番されるので）ってしたいので、@ValidationとOnRegister追加。
    *
    * @param studentDetail 　受講生詳細
    * @return　実行結果
    */
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(
-      @Validated(raisetech.StudentManagement.valitaion.OnRegisterStudent.class) @RequestBody StudentDetail studentDetail) {
+      @Validated(raisetech.StudentManagement.validaion.OnRegisterStudent.class) @RequestBody StudentDetail studentDetail) {
     StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
     return ResponseEntity.ok(responseStudentDetail);
   }

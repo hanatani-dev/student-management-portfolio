@@ -1,5 +1,5 @@
 package raisetech.StudentManagement.validaion;
 
-public interface OnRegisterStudent {
+public interface OnUpdate {
 
 }
