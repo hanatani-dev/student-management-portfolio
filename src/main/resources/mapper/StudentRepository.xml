@@ -3,6 +3,12 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="rasetech.StudentManagement.Repository.StudentRepository">
 
+  <!-- ✅★ 受講生ID検索を追加 -->
+  <select id="searchStudent" parameterType="String"
+    resultType="rasetech.StudentManagement.Data.Student">
+    SELECT * FROM students WHERE id = #{id}
+  </select>
+
   <!-- 受講生コース情報の全件検索 -->
   <select id="searchStudentCourseList" resultType="rasetech.StudentManagement.Data.StudentCourse">
     SELECT * FROM students_courses
@@ -47,4 +53,5 @@
     SET course_name = #{courseName}
     WHERE id = #{id}
   </update>
+
 </mapper>
