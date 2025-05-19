@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("raisetech.StudentManagement.Repository")
-public class StudentManagement2Application {
+public class StudentManagementApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(StudentManagement2Application.class, args);
+    SpringApplication.run(StudentManagementApplication.class, args);
   }
 }
 
