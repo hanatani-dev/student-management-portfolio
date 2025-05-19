@@ -1,6 +1,7 @@
 package raisetech.StudentManagement.controller;
 
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,8 @@ public class StudentController {
    * @return　受講生
    */
   @GetMapping("/student/{id}")//単一検索できる！PostmanでID検索したみたいに！
-  public StudentDetail getStudent(@PathVariable @Size(min = 1, max = 3) String id) {
+  public StudentDetail getStudent(
+      @PathVariable @NotBlank @Pattern(regexp = "\\d+$") String id) {
     return service.searchStudent(id);
   }
 
