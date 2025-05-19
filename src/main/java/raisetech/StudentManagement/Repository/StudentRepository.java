@@ -1,9 +1,9 @@
-package raisetech.StudentManagement.Repository;
+package raisetech.StudentManagement.repository;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import raisetech.StudentManagement.Data.Student;
-import raisetech.StudentManagement.Data.StudentCourse;
+import raisetech.StudentManagement.data.Student;
+import raisetech.StudentManagement.data.StudentCourse;
 
 /**
  * 受講生テーブルと受講生コース情報テーブルと紐づくRepositoryです。
@@ -13,7 +13,7 @@ public interface StudentRepository {
 
   // 全受講生の取得
   List<Student> search();
-
+  
   // IDで受講生を検索
   Student searchStudent(String id);
 

@@ -1,4 +1,4 @@
-package raisetech.StudentManagement.Controller;
+package raisetech.StudentManagement.controller;
 
 import jakarta.validation.constraints.Size;
 import java.util.List;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import raisetech.StudentManagement.Domain.StudentDetail;
-import raisetech.StudentManagement.Service.StudentService;
+import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.service.StudentService;
 
 /**
  * 以下、運用する人に見せるのか、チームメンバーに見せるのか、で、 受講生の検索や登録、更新などを行うREST　APIとして受け付けるControllerです。

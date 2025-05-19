@@ -1,4 +1,4 @@
-package raisetech.StudentManagement.Data;
+package raisetech.StudentManagement.data;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
@@ -19,7 +19,7 @@ public class Student {//MySQLの、Student＿ManagementのDatebaseの中につ�
   @Null(groups = OnRegisterStudent.class, message = "新規登録時はID不要です。")
   @NotNull(groups = OnRpdateStudent.class, message = "更新時はIDが必須です。")
   @Size(max = 100, groups = OnRpdateStudent.class, message = "IDは100文字以内で入力してください。")
-//@Size に groups = OnRpdateStudent.class を追加	登録時に @Size が実行されないようにするため
+  //@Size に groups = OnRpdateStudent.class を追加	登録時に @Size が実行されないようにするため
   private String id;
 
   @NotBlank(message = "名前は必須です。")

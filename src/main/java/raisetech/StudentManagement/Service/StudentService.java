@@ -1,15 +1,15 @@
-package raisetech.StudentManagement.Service;
+package raisetech.StudentManagement.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import raisetech.StudentManagement.Controller.Converter.StudentConverter;
-import raisetech.StudentManagement.Data.Student;
-import raisetech.StudentManagement.Data.StudentCourse;
-import raisetech.StudentManagement.Domain.StudentDetail;
-import raisetech.StudentManagement.Repository.StudentRepository;
+import raisetech.StudentManagement.controller.converter.StudentConverter;
+import raisetech.StudentManagement.data.Student;
+import raisetech.StudentManagement.data.StudentCourse;
+import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.repository.StudentRepository;
 
 /**
  * 受講生情報を取り扱うサービスです。受講生の検索や登録・更新処理を行います。

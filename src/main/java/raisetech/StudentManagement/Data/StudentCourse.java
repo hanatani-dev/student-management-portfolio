@@ -1,4 +1,4 @@
-package raisetech.StudentManagement.Data;
+package raisetech.StudentManagement.data;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
