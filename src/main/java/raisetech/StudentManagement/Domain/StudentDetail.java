@@ -1,4 +1,4 @@
-package raisetech.Domain;
+package raisetech.StudentManagement.Domain;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +25,4 @@ public class StudentDetail {
   /**
    * StudentsCoursesオブジェクトは、Studentオブジェクトに対して、複数コース受講してることあるはず。List使う！
    */
-
-
 }

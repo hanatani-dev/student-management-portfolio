@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import raisetech.Domain.StudentDetail;
 import raisetech.StudentManagement.Controller.Converter.StudentConverter;
 import raisetech.StudentManagement.Data.Student;
 import raisetech.StudentManagement.Data.StudentCourse;
+import raisetech.StudentManagement.Domain.StudentDetail;
 import raisetech.StudentManagement.Repository.StudentRepository;
 
 /**
