@@ -1,4 +1,4 @@
-package rasetech.Domain;
+package raisetech.Domain;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import rasetech.StudentManagement.Data.Student;
-import rasetech.StudentManagement.Data.StudentCourse;
+import raisetech.StudentManagement.Data.Student;
+import raisetech.StudentManagement.Data.StudentCourse;
 
 @Getter
 @Setter

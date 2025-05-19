@@ -1,9 +1,9 @@
-package rasetech.StudentManagement.Repository;
+package raisetech.StudentManagement.Repository;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import rasetech.StudentManagement.Data.Student;
-import rasetech.StudentManagement.Data.StudentCourse;
+import raisetech.StudentManagement.Data.Student;
+import raisetech.StudentManagement.Data.StudentCourse;
 
 /**
  * 受講生テーブルと受講生コース情報テーブルと紐づくRepositoryです。

@@ -1,4 +1,4 @@
-package rasetech.StudentManagement.Data;
+package raisetech.StudentManagement.Data;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
