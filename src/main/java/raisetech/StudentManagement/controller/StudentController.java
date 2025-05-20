@@ -41,6 +41,7 @@ public class StudentController {
    */
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
+    //throw new Exception()=検査例外 RuntimeException()=非検査例外
     return service.searchStudentList();
   }
 
