@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.exception.TestException;
 import raisetech.StudentManagement.service.StudentService;
 
 /**
@@ -40,9 +41,9 @@ public class StudentController {
    * @return 受講生詳細一覧（全件）
    */
   @GetMapping("/studentList")
-  public List<StudentDetail> getStudentList() {
-    //throw new Exception()=検査例外 RuntimeException()=非検査例外
-    return service.searchStudentList();
+  public List<StudentDetail> getStudentList() throws TestException {
+    throw new TestException(
+        "現在のこのAPIは利用できません。URLは「studentList」ではなく「students」を利用してください。");
   }
 
   /**
