@@ -52,7 +52,7 @@ public class StudentController {
    */
   @GetMapping("/student/{id}")//単一検索できる！PostmanでID検索したみたいに！
   public StudentDetail getStudent(
-      @PathVariable @NotBlank @Pattern(regexp = "\\d+$") String id) {
+      @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") String id) {
     return service.searchStudent(id);
   }
 
