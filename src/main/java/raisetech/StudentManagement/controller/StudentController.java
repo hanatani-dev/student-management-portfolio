@@ -41,9 +41,14 @@ public class StudentController {
    * @return 受講生詳細一覧（全件）
    */
   @GetMapping("/studentList")
-  public List<StudentDetail> getStudentList() throws TestException {
-    throw new TestException(
-        "現在のこのAPIは利用できません。URLは「studentList」ではなく「students」を利用してください。");
+  public List<StudentDetail> getStudentList() {
+    return service.getAllStudents(); // ←サービス側の実装に合わせて
+  }
+
+  // 新しく追加
+  @GetMapping("/testException")
+  public void testException() throws TestException {
+    throw new TestException("これはテスト用の例外です！");
   }
 
   /**
@@ -83,5 +88,5 @@ public class StudentController {
     service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新処理が成功しました。");
   }
-  
+
 }
