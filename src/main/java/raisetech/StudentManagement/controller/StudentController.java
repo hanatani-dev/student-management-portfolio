@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.domain.StudentDetail;
-import raisetech.StudentManagement.exception.TestException;
+import raisetech.StudentManagement.exceptionHandler.TestException;
 import raisetech.StudentManagement.service.StudentService;
 
 /**
@@ -89,6 +89,7 @@ public class StudentController {
   @ExceptionHandler(TestException.class)//例外をハンドリングする＝コントロールする
   public ResponseEntity<String> handleTestException(
       TestException ex) {//①・・・一覧検索で書いた例外処理、実行したらここに飛んでくる。
+    //ログ出力できるようにする文章は、returnの前の行に書くこと多いが、会社に準ずる。
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     //   ↑　　　　　　　　　　　　　　　　　　　　　　　↑　　　　　　　　　　　　　　↑
     //Postmanの一覧検索画面には、　　　　　　　400のBAD_REQUEST出て、　　　一覧検索に書いたコメントが出力される。
