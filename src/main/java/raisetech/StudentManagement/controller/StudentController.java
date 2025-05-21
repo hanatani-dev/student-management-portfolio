@@ -42,7 +42,7 @@ public class StudentController {
    */
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
-    return service.getAllStudents(); // ←サービス側の実装に合わせて
+    return service.searchStudentList();
   }
 
   // 新しく追加
