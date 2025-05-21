@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 public class GlobalExceptionHandler {
 
-  @ControllerAdvice
+  @ControllerAdvice//@ControllerAdvice をつけると、アプリ全体の例外を拾える共通ハンドラーになるよ！
   public class GlobalExceptionHandler {
 
     @ExceptionHandler(TestException.class)

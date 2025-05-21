@@ -4,10 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,13 +83,5 @@ public class StudentController {
     service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新処理が成功しました。");
   }
-
-  @ExceptionHandler(TestException.class)//例外をハンドリングする＝コントロールする
-  public ResponseEntity<String> handleTestException(
-      TestException ex) {//①・・・一覧検索で書いた例外処理、実行したらここに飛んでくる。
-    //ログ出力できるようにする文章は、returnの前の行に書くこと多いが、会社に準ずる。
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    //   ↑　　　　　　　　　　　　　　　　　　　　　　　↑　　　　　　　　　　　　　　↑
-    //Postmanの一覧検索画面には、　　　　　　　400のBAD_REQUEST出て、　　　一覧検索に書いたコメントが出力される。
-  }
+  
 }
