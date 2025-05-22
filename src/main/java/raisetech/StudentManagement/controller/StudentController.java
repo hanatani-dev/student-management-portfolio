@@ -1,6 +1,7 @@
 package raisetech.StudentManagement.controller;
 
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.exceptionHandler.TestException;
 import raisetech.StudentManagement.service.StudentService;
 
 /**
@@ -43,6 +45,12 @@ public class StudentController {
     return service.searchStudentList();
   }
 
+  // 新しく追加
+  @GetMapping("/testException")
+  public void testException() throws TestException {
+    throw new TestException("これはテスト用の例外です！");
+  }
+
   /**
    * 受講生検索です。 IDに紐づく任意の情報を取得します。
    *
@@ -50,7 +58,8 @@ public class StudentController {
    * @return　受講生
    */
   @GetMapping("/student/{id}")//単一検索できる！PostmanでID検索したみたいに！
-  public StudentDetail getStudent(@PathVariable @Size(min = 1, max = 3) String id) {
+  public StudentDetail getStudent(
+      @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") String id) {
     return service.searchStudent(id);
   }
 
@@ -79,4 +88,5 @@ public class StudentController {
     service.updateStudent(studentDetail);
     return ResponseEntity.ok("更新処理が成功しました。");
   }
+
 }
