@@ -13,20 +13,25 @@ import lombok.Setter;
 @Setter
 public class StudentCourse {
 
+  @Schema(description = "コースID（自動採番）", example = "1")
   @NotBlank(message = "コースIDは必須です。")
   @Size(max = 10, message = "コースIDは10文字以内で入力してください。")
   private String id;
 
+  @Schema(description = "受講生ID (受講生情報にて自動採番されている)", example = "1")
   @NotBlank(message = "受講生IDは必須です。")
   private String studentId;
 
+  @Schema(description = "コース名", example = "Javaプログラミング入門")
   @NotBlank(message = "コース名は必須です。")
   @Size(max = 50, message = "コース名は50文字以内で入力してください。")
   private String courseName;
 
+  @Schema(description = "コース開始日", example = "2024-04-01T00:00:00")
   @NotNull(message = "コース開始日は必須です。")
   private LocalDateTime courseStartAt;
 
+  @Schema(description = "コース終了日", example = "2025-04-01T00:00:00")
   @NotNull(message = "コース終了日は必須です。")
   private LocalDateTime courseEndAt;
 }
