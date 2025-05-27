@@ -1,5 +1,6 @@
 package raisetech.StudentManagement.data;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -13,6 +14,7 @@ import lombok.Setter;
 import raisetech.StudentManagement.validaion.OnRegisterStudent;
 import raisetech.StudentManagement.validaion.OnRpdateStudent;
 
+@Schema(description = "受講生")
 @Getter
 @Setter
 public class Student {//MySQLの、Student＿ManagementのDatebaseの中につくったTABLE「students」に関連するようにここ作っていく。
