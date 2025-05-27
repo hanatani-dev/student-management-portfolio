@@ -1,9 +1,11 @@
 package raisetech.StudentManagement;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@OpenAPIDefinition
 @SpringBootApplication
 // ✅ 新（小文字に変更）
 @MapperScan("raisetech.StudentManagement.repository")
