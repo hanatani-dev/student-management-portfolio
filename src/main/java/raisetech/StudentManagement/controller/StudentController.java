@@ -1,6 +1,7 @@
 package raisetech.StudentManagement.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
@@ -48,6 +49,13 @@ public class StudentController {
   }
 
   // 新しく追加
+  @Operation(
+      summary = "テスト用の例外発生",
+      description = "意図的にTestExceptionを発生させるテスト用エンドポイントです。",
+      responses = {
+          @ApiResponse(responseCode = "500", description = "テスト用例外が発生しました")
+      }
+  )
   @GetMapping("/testException")
   public void testException() throws TestException {
     throw new TestException("これはテスト用の例外です！");
@@ -59,6 +67,7 @@ public class StudentController {
    * @param id 　受講生ID
    * @return　受講生
    */
+  @Operation(summary = "個人検索", description = "指定したIDの受講生を検索します。")
   @GetMapping("/student/{id}")//単一検索できる！PostmanでID検索したみたいに！
   public StudentDetail getStudent(
       @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") String id) {
@@ -85,6 +94,7 @@ public class StudentController {
    * @param studentDetail 　受講生詳細
    * @return　実行結果
    */
+  @Operation(summary = "受講生更新", description = "受講生情報を更新します")
   @PutMapping("/updateStudent")//Put=全体更新　Patch=部分更新
   public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
     // 学生リストに更新
