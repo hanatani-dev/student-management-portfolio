@@ -71,6 +71,7 @@ public class StudentController {
    * @param studentDetail 　受講生詳細
    * @return　実行結果
    */
+  @Operation(summary = "受講生登録", description = "受講生を登録します。")
   @PostMapping("/registerStudent")
   public ResponseEntity<StudentDetail> registerStudent(
       @Validated(raisetech.StudentManagement.validaion.OnRegisterStudent.class) @RequestBody StudentDetail studentDetail) {
