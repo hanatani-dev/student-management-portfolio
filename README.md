@@ -67,20 +67,21 @@ src
 
 ## 🚀 ローカルでの起動方法
 
-1. プロジェクトを IntelliJ 等で開く
+1. プロジェクトを IntelliJ などで開く  
 2. `src/main/resources/application.properties` を作成し、以下の内容を記述
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/student_db
-spring.datasource.username=root
-spring.datasource.password=（セキュリティのため非公開）
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-server.port=8080
+<pre> ```properties 
+    spring.datasource.url=jdbc:mysql://localhost:3306/student_db 
+    spring.datasource.username=root spring.datasource.password=（セキュリティのため非公開） 
+    spring.jpa.hibernate.ddl-auto=update spring.jpa.show-sql=true server.port=8080 
+    
+    ``` </pre>
 📌 パスワードなどの機密情報は .gitignore に含めるよう注意し、GitHub等に公開しないようにしています。
 
+
+    
 ---
+
+
 ## 🔗 リンク
 
 - 本リポジトリ：[https://github.com/hanatani-dev/student-management-portfolio](https://github.com/hanatani-dev/student-management-portfolio)
