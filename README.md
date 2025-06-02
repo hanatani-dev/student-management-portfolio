@@ -37,8 +37,8 @@ Java / Spring Boot を使用し、実務を想定したCRUD操作を実装して
 
 ---
 
-## 📂 ディレクトリ構成（一部）
-//
+<details> <summary>📁 ディレクトリ構成を見る</summary>
+
 src
 ├── main
 │ ├── java/com/example/studentmanagement
@@ -51,7 +51,8 @@ src
 └── test
 └── java/com/example/studentmanagement
 └── service
-//
+
+</details>
 ---
 
 ## 🔗 リンク
