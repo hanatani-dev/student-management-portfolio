@@ -39,24 +39,28 @@ Java / Spring Boot を使用し、実務を想定したCRUD操作を実装して
 
 <details>
 <summary>📁 ディレクトリ構成を見る</summary>
+
+```
 src
 ├── main
-│ ├── java
-│ │ └── com
-│ │ └── example
-│ │ └── studentmanagement
-│ │ ├── controller
-│ │ ├── service
-│ │ ├── repository
-│ │ └── entity
-│ └── resources
-│ └── application.properties
+│   ├── java
+│   │   └── com
+│   │       └── example
+│   │           └── studentmanagement
+│   │               ├── controller
+│   │               ├── service
+│   │               ├── repository
+│   │               └── entity
+│   └── resources
+│       └── application.properties
 └── test
-└── java
-└── com
-└── example
-└── studentmanagement
-└── service
+    └── java
+        └── com
+            └── example
+                └── studentmanagement
+                    └── service
+```
+
 </details>
 ---
 
