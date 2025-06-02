@@ -37,11 +37,15 @@ Java / Spring Boot を使用し、実務を想定したCRUD操作を実装して
 
 ---
 
-<details> <summary>📁 ディレクトリ構成を見る</summary>
+<details>
+<summary>📁 ディレクトリ構成を見る</summary>
 
 src
 ├── main
-│ ├── java/com/example/studentmanagement
+│ ├── java
+│ │ └── com
+│ │ └── example
+│ │ └── studentmanagement
 │ │ ├── controller
 │ │ ├── service
 │ │ ├── repository
@@ -49,8 +53,15 @@ src
 │ └── resources
 │ └── application.properties
 └── test
-└── java/com/example/studentmanagement
+└── java
+└── com
+└── example
+└── studentmanagement
 └── service
+
+bash
+コピーする
+編集する
 
 </details>
 ---
