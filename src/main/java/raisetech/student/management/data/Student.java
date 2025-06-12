@@ -1,4 +1,4 @@
-package raisetech.StudentManagement.data;
+package raisetech.student.management.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -11,8 +11,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import raisetech.StudentManagement.validaion.OnRegisterStudent;
-import raisetech.StudentManagement.validaion.OnRpdateStudent;
+import raisetech.student.management.validaion.OnRegisterStudent;
+import raisetech.student.management.validaion.OnRpdateStudent;
 
 @Schema(description = "受講生")
 @Getter

@@ -1,4 +1,4 @@
-package raisetech.StudentManagement;
+package raisetech.student.management;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @OpenAPIDefinition(info = @Info(title = "受講生管理システム"))
 @SpringBootApplication
 // ✅ 新（小文字に変更）
-@MapperScan("raisetech.StudentManagement.repository")
+@MapperScan("raisetech.student.management.repository")
 public class StudentManagementApplication {
 
   public static void main(String[] args) {
