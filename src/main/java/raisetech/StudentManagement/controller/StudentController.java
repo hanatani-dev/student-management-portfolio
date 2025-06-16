@@ -61,6 +61,15 @@ public class StudentController {
     throw new TestException("これはテスト用の例外です！");
   }
 
+  //ControllerTestクラス用の例外メソッド
+  @Operation(summary = "旧API用メッセージ", description = "古いURLにアクセスされた際のメッセージを返すエンドポイント")
+  @GetMapping("/exception")
+  public ResponseEntity<String> oldApiMessage() {
+    return ResponseEntity
+        .badRequest()
+        .body("このAPIは現在利用できません。古いURLとなっています。");
+  }
+
   /**
    * 受講生検索です。 IDに紐づく任意の情報を取得します。
    *

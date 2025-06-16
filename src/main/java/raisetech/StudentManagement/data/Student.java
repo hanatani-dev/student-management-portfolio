@@ -22,7 +22,7 @@ public class Student {//MySQLの、Student＿ManagementのDatebaseの中につ�
   @Schema(description = "受講生ID（自動採番）", example = "1")
   @Null(groups = OnRegisterStudent.class, message = "新規登録時はID不要です。")
   @NotNull(groups = OnRpdateStudent.class, message = "更新時はIDが必須です。")
-  @Pattern(regexp = "^\\d+$", message = "IDは数字を入力してください。")
+  @Pattern(regexp = "^\\d+$", message = "数字のみ入力するようにしてください")
   private String id;
 
   @Schema(description = "氏名", example = "山田 花子")
