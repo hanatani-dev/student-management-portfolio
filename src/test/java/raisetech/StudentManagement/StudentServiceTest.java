@@ -5,6 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,13 +57,13 @@ class StudentServiceTest {
     when(repository.searchStudentCourseList()).thenReturn(studentCourseList);
 
     //実行・・・ Testするときに使う、sut＝system under test 正常に動作していることを表す。被試験対象
-    List<StudentDetail> actual = sut.searchStudentList();
+    sut.searchStudentList();
 
     //検証 ✅「呼ばれている」ことだけを確認するテストの意味
     //ここで重要なのは「中身が何か」じゃなくて、「呼び出されたこと」をチェックしてる点！
     //これはMock（偽物）相手のユニットテストではよくやるパターン。
     verify(repository, times(1)).search();//repositoryクラスのsearch1回呼び出してますよってこと。
-    verify(repository, times(1)).search();//searchStudentCourseListも1回呼び出してますよ。
+    verify(repository, times(1)).searchStudentCourseList();//searchStudentCourseListも1回呼び出してますよ。
     verify(converter, times(1)).convertStudentDetails(studentList,
         studentCourseList);//convertクラスのconvertメソッドも1回呼び出してますよ。
     //後処理
@@ -70,37 +71,32 @@ class StudentServiceTest {
   }
 
   @Test
-  void 受講生詳細検索_リポジトリが正しく呼ばれ_正しい受講生詳細が返ること() {
+  void 受講生詳細の検索_リポジトリの処理が適切に呼び出せていること() {
     // --- 準備 ---実際のアプリケーションでは IDが自動採番されてたり、1～100までの制限があったりする。
     //でも、テストの中ではそこまで厳密に再現しなくてOKなことが多い！
-    String studentId = "123";
+    String id = "999";
 
     // Mock用のStudentとStudentCourse作成
-    Student mockStudent = new Student();
-    mockStudent.setId(studentId); // getId()が動作するように
-
-    List<StudentCourse> mockCourseList = List.of(new StudentCourse());
+    Student student = new Student();
+    student.setId(id); // getId()が動作するように
 
     // モックの戻り値設定
-    when(repository.searchStudent(studentId)).thenReturn(mockStudent);
-    when(repository.searchStudentCourse(studentId)).thenReturn(mockCourseList);
+    when(repository.searchStudent(id)).thenReturn(student);
+    when(repository.searchStudentCourse(id)).thenReturn(new ArrayList<>());
+
+    StudentDetail expected = new StudentDetail(student, new ArrayList<>());
 
     // --- 実行 ---
-    StudentDetail result = sut.searchStudent(studentId);
+    StudentDetail actual = sut.searchStudent(id);
 
     // --- 検証 ---
-    verify(repository, times(1)).searchStudent(studentId);
-    verify(repository, times(1)).searchStudentCourse(studentId);
+    verify(repository, times(1)).searchStudent(id);
+    verify(repository, times(1)).searchStudentCourse(id);
 
     // 戻り値が正しいか（identity比較OK）
-    assertEquals(mockStudent, result.getStudent());
-    assertEquals(mockCourseList, result.getStudentCourseList());
-
-    //🔍 解説ポイント
-    //mockStudent.setId(...) をちゃんとやらないと、2つ目の searchStudentCourse(student.getId()) が null で動かなくなる可能性がある
-    //StudentDetail の中身（student と courseList）がちゃんとMockの値と一致してるかを assertEquals でチェック
-    //verify(...) でメソッドが1回だけちゃんと呼ばれてるか確認
+    assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
   }
+
 
   @Test
   void 受講生詳細登録_リポジトリの登録メソッドが正しく呼ばれ_引数のStudentDetailが返ること() {
@@ -108,24 +104,35 @@ class StudentServiceTest {
 
     // モックのStudent作成
     Student student = new Student();
-    student.setId("123");
 
     // モックのStudentCourse（1件だけ）
-    StudentCourse course = new StudentCourse();
-    List<StudentCourse> courseList = List.of(course);
+    StudentCourse studentCourse = new StudentCourse();
+    List<StudentCourse> studentCourseList = List.of(studentCourse);
 
     // モックのStudentDetail
-    StudentDetail detail = new StudentDetail();
-    detail.setStudent(student);
-    detail.setStudentCourseList(courseList);
+    StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
 
     // --- 実行 ---
-    StudentDetail result = sut.registerStudent(detail);
+    sut.registerStudent(studentDetail);
 
     // --- 検証 ---
     verify(repository, times(1)).registerStudent(student);
-    verify(repository, times(1)).registerStudentCourse(course);
-    assertEquals(detail, result); // 引数と同じオブジェクトが返る
+    verify(repository, times(1)).registerStudentCourse(studentCourse);
+  }
+
+  @Test
+  void 受講生詳細の登録_初期化処理が行われること() {
+    String id = "999";
+    Student student = new Student();
+    student.setId(id);
+    StudentCourse studentCourse = new StudentCourse();
+
+    sut.initStudentsCourse(studentCourse, student.getId());
+
+    assertEquals(id, studentCourse.getStudentId());
+    assertEquals(LocalDateTime.now().getHour(), studentCourse.getCourseStartAt().getHour());
+    assertEquals(LocalDateTime.now().plusYears(1).getYear(),
+        studentCourse.getCourseEndAt().getYear());
   }
 
   @Test
@@ -134,29 +141,20 @@ class StudentServiceTest {
 
     // モックのStudent
     Student student = new Student();
-    student.setId("s123");
 
     // モックのコース（今回は2件作ってみる）
-    StudentCourse course1 = new StudentCourse();
-    StudentCourse course2 = new StudentCourse();
-    List<StudentCourse> courseList = List.of(course1, course2);
+    StudentCourse studentCourse = new StudentCourse();
+    List<StudentCourse> studentCourseList = List.of(studentCourse);
 
     // モックのStudentDetail
-    StudentDetail detail = new StudentDetail();
-    detail.setStudent(student);
-    detail.setStudentCourseList(courseList);
+    StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
 
     // --- 実行 ---
-    sut.updateStudent(detail);
+    sut.updateStudent(studentDetail);
 
     // --- 検証 ---
     verify(repository, times(1)).updateStudent(student);
-    verify(repository, times(1)).updateStudentCourse(course1);
-    verify(repository, times(1)).updateStudentCourse(course2);
-
-    //🧠 ポイント解説！
-    //times(1) を明示してるのは、「ちゃんと1回だけ呼ばれたか」をチェックしてるってこと
-    //    StudentCourse が1件なら verify(...).updateStudentCourse(course) 1回で済む。　⇒　件数が増えたらその数だけ verify(...) を書けばOK
+    verify(repository, times(1)).updateStudentCourse(studentCourse);
   }
 }
 

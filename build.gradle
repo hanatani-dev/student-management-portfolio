@@ -52,6 +52,9 @@ dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'//プログラム実行するとき”のみ”使う
     testImplementation 'org.springframework.boot:spring-boot-starter-test'//testするときだけ使う
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'org.assertj:assertj-core:3.24.2'//AssertJ
+
 }
 
 tasks.named('test') {//グレイドルに”test”を追加できる　

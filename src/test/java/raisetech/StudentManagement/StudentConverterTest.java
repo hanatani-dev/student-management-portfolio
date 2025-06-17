@@ -16,64 +16,63 @@ public class StudentConverterTest {
   private StudentConverter sut;
 
   @BeforeEach
-  void setUp() {
+  void before() {
     sut = new StudentConverter();
   }
 
   @Test
-  void convertStudentDetailsで全項目が正しくマッピングされること() {
-    // Arrange
+  void 受講生のリストと受講生コース情報のリストを渡して受講生詳細のリストが作成できること() {
+    Student student = createStudent();
+
+    StudentCourse studentCourse = new StudentCourse();
+    studentCourse.setId("1");
+    studentCourse.setStudentId("1");
+    studentCourse.setCourseName("Javaコース");
+    studentCourse.setCourseStartAt(LocalDateTime.now());
+    studentCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
+
+    List<Student> studentList = List.of(student);
+    List<StudentCourse> studentCourseList = List.of(studentCourse);
+
+    List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentCourseList);
+
+    assertThat(actual.get(0).getStudent()).isEqualTo(student);
+    assertThat(actual.get(0).getStudentCourseList()).isEqualTo(studentCourseList);
+  }
+
+
+  @Test
+  void 受講生のリストと受講生コース情報のリストを渡したときに紐づかない受講生情報は除外されること() {
+    Student student = createStudent();
+
+    StudentCourse studentCourse = new StudentCourse();
+    studentCourse.setId("1");
+    studentCourse.setStudentId("2");  //コース情報と紐づかないIDなので、コース情報は空で返ってくる。
+    studentCourse.setCourseName("Javaコース");
+    studentCourse.setCourseStartAt(LocalDateTime.now());
+    studentCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
+
+    List<Student> studentList = List.of(student);
+    List<StudentCourse> studentCourseList = List.of(studentCourse);
+
+    List<StudentDetail> actual = sut.convertStudentDetails(studentList, studentCourseList);
+
+    assertThat(actual.get(0).getStudent()).isEqualTo(student);
+    assertThat(actual.get(0).getStudentCourseList()).isEmpty();
+  }
+
+  private static Student createStudent() {
     Student student = new Student();
     student.setId("1");
-    student.setName("山田花子");
-    student.setKanaName("ヤマダハナコ");
-    student.setNickname("はなちゃん");
-    student.setEmail("hana@example.com");
-    student.setArea("東京都渋谷区");
-    student.setAge(25);
-    student.setSex("女性");
-    student.setRemark("備考です");
+    student.setName("江並公史");
+    student.setKanaName("エナミコウジ");
+    student.setNickname("エナミ");
+    student.setEmail("test@example.com");
+    student.setArea("奈良県");
+    student.setAge(36);
+    student.setSex("男性");
+    student.setRemark("");
     student.setDeleted(false);
-
-    LocalDateTime start = LocalDateTime.of(2024, 4, 1, 0, 0);
-    LocalDateTime end = LocalDateTime.of(2025, 4, 1, 0, 0);
-
-    StudentCourse course = new StudentCourse();
-    course.setId("101");
-    course.setStudentId("1");
-    course.setCourseName("Javaプログラミング入門");
-    course.setCourseStartAt(start);
-    course.setCourseEndAt(end);
-
-    // Act
-    List<StudentDetail> result = sut.convertStudentDetails(
-        List.of(student),
-        List.of(course)
-    );
-
-    // Assert
-    assertThat(result).hasSize(1);
-    StudentDetail detail = result.get(0);
-    Student resultStudent = detail.getStudent();
-    List<StudentCourse> resultCourses = detail.getStudentCourseList();
-
-    assertThat(resultStudent.getId()).isEqualTo("1");
-    assertThat(resultStudent.getName()).isEqualTo("山田花子");
-    assertThat(resultStudent.getKanaName()).isEqualTo("ヤマダハナコ");
-    assertThat(resultStudent.getNickname()).isEqualTo("はなちゃん");
-    assertThat(resultStudent.getEmail()).isEqualTo("hana@example.com");
-    assertThat(resultStudent.getArea()).isEqualTo("東京都渋谷区");
-    assertThat(resultStudent.getAge()).isEqualTo(25);
-    assertThat(resultStudent.getSex()).isEqualTo("女性");
-    assertThat(resultStudent.getRemark()).isEqualTo("備考です");
-    assertThat(resultStudent.isDeleted()).isFalse();
-
-    assertThat(resultCourses).hasSize(1);
-    StudentCourse resultCourse = resultCourses.get(0);
-    assertThat(resultCourse.getId()).isEqualTo("101");
-    assertThat(resultCourse.getStudentId()).isEqualTo("1");
-    assertThat(resultCourse.getCourseName()).isEqualTo("Javaプログラミング入門");
-    assertThat(resultCourse.getCourseStartAt()).isEqualTo(start);
-    assertThat(resultCourse.getCourseEndAt()).isEqualTo(end);
+    return student;
   }
 }
