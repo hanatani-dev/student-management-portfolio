@@ -28,8 +28,10 @@ repositories {
 dependencies {
     //Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'//プログラム実行するとき使う
+    
     //Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    
     //Validation=入力チェック
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -63,7 +65,9 @@ dependencies {
 
     //ControllerTest時に、動作確認のため、個人的に追加。
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
     testImplementation 'org.assertj:assertj-core:3.24.2'//AssertJ
+
 }
 
 tasks.named('test') {//グレイドルに”test”を追加できる　
