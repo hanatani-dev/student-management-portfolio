@@ -27,8 +27,8 @@
   <!-- 受講生の新規登録（IDは自動採番） -->
   <insert id="registerStudent" useGeneratedKeys="true" keyProperty="id"
     parameterType="raisetech.StudentManagement.data.Student">
-    INSERT INTO students(name, nickname, email, area, age, sex, remark, is_deleted)
-    VALUES(#{name}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)
+    INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, is_deleted)
+    VALUES(#{name}, #{kanaName}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)
   </insert>
 
   <!-- 受講生コース情報の新規登録（IDは自動採番） -->
@@ -42,6 +42,7 @@
   <update id="updateStudent" parameterType="raisetech.StudentManagement.data.Student">
     UPDATE students
     SET name = #{name},
+    kana_name = #{kanaName},
     nickname = #{nickname},
     email = #{email},
     area = #{area},
