@@ -1,6 +1,7 @@
 package raisetech.StudentManagement;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +36,18 @@ class StudentRepositoryTest {
   }
 
   @Test
+  void 存在しないIDでは受講生が取得できないこと() {
+    Student student = sut.searchStudent("999");
+    assertThat(student).isNull();
+  }
+
+  @Test
+  void nullのIDで検索した場合はnullが返ること() {
+    Student student = sut.searchStudent(null);
+    assertThat(student).isNull();
+  }
+
+  @Test
   void 全ての受講生コース情報が取得できること() {
     List<StudentCourse> courses = sut.searchStudentCourseList();
     assertThat(courses.size()).isEqualTo(10);
@@ -65,6 +78,16 @@ class StudentRepositoryTest {
 
     assertThat(actual.size()).isEqualTo(6);
   }
+
+  @Test
+  void 必須項目が抜けている受講生は登録できないこと() {
+    Student student = new Student();
+    student.setEmail("invalid@example.com"); // 名前など未設定
+
+    assertThatThrownBy(() -> sut.registerStudent(student))
+        .isInstanceOf(Exception.class); // 実装に合わせて調整
+  }
+
 
   @Test
   void コース登録が行えること() {
