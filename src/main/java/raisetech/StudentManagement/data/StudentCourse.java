@@ -1,5 +1,6 @@
 package raisetech.StudentManagement.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,9 +30,15 @@ public class StudentCourse {
 
   @Schema(description = "コース開始日", example = "2024-04-01T00:00:00")
   @NotNull(message = "コース開始日は必須です。")
+  @JsonProperty("courseStartAt")
   private LocalDateTime courseStartAt;
 
   @Schema(description = "コース終了日", example = "2025-04-01T00:00:00")
   @NotNull(message = "コース終了日は必須です。")
+  @JsonProperty("courseEndAt")
   private LocalDateTime courseEndAt;
+
+  @Schema(description = "コースステータス（仮申込・本申込・受講中・受講終了）", example = "仮申込")
+  @JsonProperty("status")
+  private String status = "仮申込";
 }

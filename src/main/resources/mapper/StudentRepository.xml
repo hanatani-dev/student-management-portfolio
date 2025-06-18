@@ -16,12 +16,15 @@
 
   <!-- 受講生コース情報の全件検索 -->
   <select id="searchStudentCourseList" resultType="raisetech.StudentManagement.data.StudentCourse">
-    SELECT * FROM students_courses
+    SELECT id, student_id, course_name, course_start_at, course_end_at, status
+    FROM students_courses
   </select>
 
   <!-- 受講生IDに紐づくコース情報検索 -->
   <select id="searchStudentCourse" resultType="raisetech.StudentManagement.data.StudentCourse">
-    SELECT * FROM students_courses WHERE student_id = #{studentId}
+    SELECT id, student_id, course_name, course_start_at, course_end_at, status
+    FROM students_courses
+    WHERE student_id = #{studentId}
   </select>
 
   <!-- 受講生の新規登録（IDは自動採番） -->
@@ -31,11 +34,11 @@
     VALUES(#{name}, #{kanaName}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)
   </insert>
 
-  <!-- 受講生コース情報の新規登録（IDは自動採番） -->
+  <!-- 受講生コース情報の新規登録（IDは自動採番・statusは自動的に「仮申込」として登録） -->
   <insert id="registerStudentCourse" useGeneratedKeys="true" keyProperty="id"
     parameterType="raisetech.StudentManagement.data.StudentCourse">
-    INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at)
-    VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt})
+    INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at, status)
+    VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt}, #{status})
   </insert>
 
   <!-- 受講生の更新 -->
@@ -56,8 +59,14 @@
   <!-- 受講生コース情報のコース名更新（IDで指定） -->
   <update id="updateStudentCourse" parameterType="raisetech.StudentManagement.data.StudentCourse">
     UPDATE students_courses
-    SET course_name = #{courseName}
+    <set>
+      <if test="courseName != null">course_name = #{courseName},</if>
+      <if test="courseStartAt != null">course_start_at = #{courseStartAt},</if>
+      <if test="courseEndAt != null">course_end_at = #{courseEndAt},</if>
+      <if test="status != null">status = #{status},</if>
+    </set>
     WHERE id = #{id}
   </update>
+
 
 </mapper>

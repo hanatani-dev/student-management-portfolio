@@ -81,6 +81,11 @@ public class StudentService {
     studentCourse.setStudentId(id);
     studentCourse.setCourseStartAt(now);
     studentCourse.setCourseEndAt(now.plusYears(1));
+
+    // status が null または空文字だったら、自動で仮申込に！
+    if (studentCourse.getStatus() == null || studentCourse.getStatus().isBlank()) {
+      studentCourse.setStatus("仮申込");
+    }
   }
 
   /**

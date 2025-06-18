@@ -130,5 +130,15 @@ class StudentRepositoryTest {
         .isEqualTo("変更されたコース");
   }
 
+  @Test
+  void コースのステータスが更新できること() {
+    List<StudentCourse> courses = sut.searchStudentCourse("1");
+    StudentCourse course = courses.get(0);
+    course.setStatus("受講終了");
 
+    sut.updateStudentCourse(course);
+
+    List<StudentCourse> updated = sut.searchStudentCourse("1");
+    assertThat(updated.get(0).getStatus()).isEqualTo("受講終了");
+  }
 }

@@ -38,8 +38,8 @@ public class StudentConverterTest {
 
     assertThat(actual.get(0).getStudent()).isEqualTo(student);
     assertThat(actual.get(0).getStudentCourseList()).isEqualTo(studentCourseList);
+    assertThat(actual.get(0).getStudentCourseList().get(0).getStatus()).isEqualTo("仮申込");
   }
-
 
   @Test
   void 受講生のリストと受講生コース情報のリストを渡したときに紐づかない受講生情報は除外されること() {
