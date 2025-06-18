@@ -1,6 +1,7 @@
-package raisetech.StudentManagement;
+package raisetech.StudentManagement.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.test.context.ActiveProfiles;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
-import raisetech.StudentManagement.repository.StudentRepository;
 
 @MybatisTest
 @ActiveProfiles("test")  // テスト用プロファイル読み込みたい場合
@@ -32,6 +32,18 @@ class StudentRepositoryTest {
     Student student = sut.searchStudent("1");
     assertThat(student).isNotNull();
     assertThat(student.getName()).isEqualTo("山田太郎");
+  }
+
+  @Test
+  void 存在しないIDでは受講生が取得できないこと() {
+    Student student = sut.searchStudent("999");
+    assertThat(student).isNull();
+  }
+
+  @Test
+  void nullのIDで検索した場合はnullが返ること() {
+    Student student = sut.searchStudent(null);
+    assertThat(student).isNull();
   }
 
   @Test
@@ -65,6 +77,16 @@ class StudentRepositoryTest {
 
     assertThat(actual.size()).isEqualTo(6);
   }
+
+  @Test
+  void 必須項目が抜けている受講生は登録できないこと() {
+    Student student = new Student();
+    student.setEmail("invalid@example.com"); // 名前など未設定
+
+    assertThatThrownBy(() -> sut.registerStudent(student))
+        .isInstanceOf(Exception.class); // 実装に合わせて調整
+  }
+
 
   @Test
   void コース登録が行えること() {
