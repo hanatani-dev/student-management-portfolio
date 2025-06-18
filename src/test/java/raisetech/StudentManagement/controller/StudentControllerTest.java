@@ -27,7 +27,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.domain.StudentDetail;
-import raisetech.StudentManagement.repository.StudentRepository;
 import raisetech.StudentManagement.service.StudentService;
 
 @WebMvcTest(StudentController.class)//これで、Test用のSpringBootが立ち上がる。
@@ -38,10 +37,6 @@ class StudentControllerTest {
 
   @MockBean
   private StudentService service;
-
-  @MockBean
-  private StudentRepository repository; // 追加‼️
-
 
   private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -103,28 +98,27 @@ class StudentControllerTest {
     mockMvc.perform(put("/updateStudent").contentType(MediaType.APPLICATION_JSON).content(
             """
                 {
-                                "student": {
-                                "id" : "12",
-                                "name" : "江並公史",
-                                "kanaName" : "エナミ",
-                                "nickname" : "コウジ",
-                                "email" : "test@example.com",
-                                "area" : "奈良",
-                                "age" : "36",
-                                "sex" : "男性",
-                                "remark" : ""
-                                },
-                                "studentCourseList":[
-                                {
-                                "id": "15",
-                                "studentId": "12",
-                                "courseName": "Javaコース",
-                                "courseStartAt": "2024-04-27T10:50:39.833614",
-                                "courseEndAt": "2025-04-27T10:50:39.833614"
-                                }
-                                ]
-                                }
-                
+                  "student": {
+                    "id" : "12",
+                    "name" : "江並公史",
+                    "kanaName" : "エナミ",
+                    "nickname" : "コウジ",
+                    "email" : "test@example.com",
+                    "area" : "奈良県",
+                    "age" : "36",
+                    "sex" : "男性",
+                    "remark" : ""
+                  },
+                  "studentCourseList":[
+                    {
+                      "id": "15",
+                      "studentId": "12",
+                      "courseName": "Javaコース",
+                      "courseStartAt": "2024-04-27T10:50:39.833614",
+                      "courseEndAt": "2025-04-27T10:50:39.833614"
+                    }
+                  ]
+                }
                 """
         ))
         .andExpect(status().isOk());
