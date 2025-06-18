@@ -1,4 +1,4 @@
-package raisetech.StudentManagement;
+package raisetech.StudentManagement.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
