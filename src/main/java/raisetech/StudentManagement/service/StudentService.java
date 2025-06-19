@@ -2,6 +2,7 @@ package raisetech.StudentManagement.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,10 +62,21 @@ public class StudentService {
     Student student = studentDetail.getStudent();
     repository.registerStudent(student);
 
+    // ステータスID→名前の仮マップ（あとでDBから取得でもOK）
+    Map<Integer, String> statusMap = Map.of(
+        1, "仮申込",
+        2, "本申込",
+        3, "受講中",
+        4, "受講終了"
+    );
+
     // やりたいことをやる
     studentDetail.getStudentCourseList().forEach(studentCourse -> {
       initStudentsCourse(studentCourse, student.getId());
       repository.registerStudentCourse(studentCourse);
+
+      // ★ここでステータス名を設定！
+      studentCourse.setStatusName(statusMap.get(studentCourse.getStatusId()));
     });
     return studentDetail;
   }
@@ -81,6 +93,11 @@ public class StudentService {
     studentCourse.setStudentId(id);
     studentCourse.setCourseStartAt(now);
     studentCourse.setCourseEndAt(now.plusYears(1));
+
+    // statusId が null なら、仮申込（ID=1）にする
+    if (studentCourse.getStatusId() == null) {
+      studentCourse.setStatusId(1);
+    }
   }
 
   /**
