@@ -165,7 +165,8 @@ class StudentServiceTest {
     course.setCourseName("Javaコース");
     course.setCourseStartAt(LocalDateTime.now());
     course.setCourseEndAt(LocalDateTime.now().plusMonths(6));
-    course.setStatus("受講中");
+    course.setStatusId(2); // ← 例えば 2 = 受講中 の場合
+    course.setStatusName("受講中");
 
     List<StudentCourse> courseList = List.of(course);
     StudentDetail detail = new StudentDetail(student, courseList);
@@ -173,7 +174,8 @@ class StudentServiceTest {
     sut.updateStudent(detail);
 
     verify(repository, times(1)).updateStudentCourse(course);
-    assertEquals("受講中", course.getStatus());
+    assertEquals(2, course.getStatusId());
+    assertEquals("受講中", course.getStatusName());
   }
 }
 

@@ -1,6 +1,7 @@
 package raisetech.StudentManagement.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +13,8 @@ import lombok.Setter;
 @Schema(description = "受講生コース情報")
 @Getter
 @Setter
+@JsonPropertyOrder({"id", "studentId", "courseName", "courseStartAt", "courseEndAt", "statusId",
+    "statusName"})
 public class StudentCourse {
 
   @Schema(description = "コースID（自動採番）", example = "1")
@@ -38,7 +41,19 @@ public class StudentCourse {
   @JsonProperty("courseEndAt")
   private LocalDateTime courseEndAt;
 
-  @Schema(description = "コースステータス（仮申込・本申込・受講中・受講終了）", example = "仮申込")
-  @JsonProperty("status")
-  private String status = "仮申込";
+  @Schema(description = "ステータスID", example = "1")
+  @NotNull(message = "ステータスIDは必須です。")
+  private Integer statusId;
+
+  @Schema(description = "ステータス名（仮申込／本申込 など）", example = "仮申込")
+  @JsonProperty("statusName")
+  private String statusName;
+
+  public String getStatusName() {
+    return statusName;
+  }
+
+  public void setStatusName(String statusName) {
+    this.statusName = statusName;
+  }
 }

@@ -30,6 +30,7 @@ public class StudentConverterTest {
     studentCourse.setCourseName("Javaコース");
     studentCourse.setCourseStartAt(LocalDateTime.now());
     studentCourse.setCourseEndAt(LocalDateTime.now().plusYears(1));
+    studentCourse.setStatusName("仮申込"); // ← これを追加！
 
     List<Student> studentList = List.of(student);
     List<StudentCourse> studentCourseList = List.of(studentCourse);
@@ -38,7 +39,7 @@ public class StudentConverterTest {
 
     assertThat(actual.get(0).getStudent()).isEqualTo(student);
     assertThat(actual.get(0).getStudentCourseList()).isEqualTo(studentCourseList);
-    assertThat(actual.get(0).getStudentCourseList().get(0).getStatus()).isEqualTo("仮申込");
+    assertThat(actual.get(0).getStudentCourseList().get(0).getStatusName()).isEqualTo("仮申込");
   }
 
   @Test

@@ -3,6 +3,16 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="raisetech.StudentManagement.repository.StudentRepository">
 
+  <resultMap id="StudentCourseMap" type="raisetech.StudentManagement.data.StudentCourse">
+    <result property="id" column="id"/>
+    <result property="studentId" column="student_id"/>
+    <result property="courseName" column="course_name"/>
+    <result property="courseStartAt" column="course_start_at"/>
+    <result property="courseEndAt" column="course_end_at"/>
+    <result property="statusId" column="status_id"/>
+    <result property="statusName" column="status_name"/>
+  </resultMap>
+
   <!-- 受講生全件検索 -->
   <select id="search" resultType="raisetech.StudentManagement.data.Student">
     SELECT * FROM students
@@ -15,16 +25,30 @@
   </select>
 
   <!-- 受講生コース情報の全件検索 -->
-  <select id="searchStudentCourseList" resultType="raisetech.StudentManagement.data.StudentCourse">
-    SELECT id, student_id, course_name, course_start_at, course_end_at, status
-    FROM students_courses
+  <select id="searchStudentCourseList" resultMap="StudentCourseMap">
+    SELECT sc.id,
+    sc.student_id,
+    sc.course_name,
+    sc.course_start_at,
+    sc.course_end_at,
+    sc.status_id,
+    s.name AS status_name
+    FROM students_courses sc
+    LEFT JOIN statuses s ON sc.status_id = s.id
   </select>
 
   <!-- 受講生IDに紐づくコース情報検索 -->
-  <select id="searchStudentCourse" resultType="raisetech.StudentManagement.data.StudentCourse">
-    SELECT id, student_id, course_name, course_start_at, course_end_at, status
-    FROM students_courses
-    WHERE student_id = #{studentId}
+  <select id="searchStudentCourse" parameterType="String" resultMap="StudentCourseMap">
+    SELECT sc.id,
+    sc.student_id,
+    sc.course_name,
+    sc.course_start_at,
+    sc.course_end_at,
+    sc.status_id,
+    s.name AS status_name
+    FROM students_courses sc
+    LEFT JOIN statuses s ON sc.status_id = s.id
+    WHERE sc.student_id = #{studentId}
   </select>
 
   <!-- 受講生の新規登録（IDは自動採番） -->
@@ -34,11 +58,11 @@
     VALUES(#{name}, #{kanaName}, #{nickname}, #{email}, #{area}, #{age}, #{sex}, #{remark}, false)
   </insert>
 
-  <!-- 受講生コース情報の新規登録（IDは自動採番・statusは自動的に「仮申込」として登録） -->
+  <!-- 受講生コース情報の新規登録（IDは自動採番・statusは自動的に「1(=仮申込)」として登録） -->
   <insert id="registerStudentCourse" useGeneratedKeys="true" keyProperty="id"
     parameterType="raisetech.StudentManagement.data.StudentCourse">
-    INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at, status)
-    VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt}, #{status})
+    INSERT INTO students_courses(student_id, course_name, course_start_at, course_end_at, status_id)
+    VALUES(#{studentId}, #{courseName}, #{courseStartAt}, #{courseEndAt}, #{statusId})
   </insert>
 
   <!-- 受講生の更新 -->
@@ -63,7 +87,7 @@
       <if test="courseName != null">course_name = #{courseName},</if>
       <if test="courseStartAt != null">course_start_at = #{courseStartAt},</if>
       <if test="courseEndAt != null">course_end_at = #{courseEndAt},</if>
-      <if test="status != null">status = #{status},</if>
+      <if test="statusId != null">status_id = #{statusId},</if>
     </set>
     WHERE id = #{id}
   </update>
