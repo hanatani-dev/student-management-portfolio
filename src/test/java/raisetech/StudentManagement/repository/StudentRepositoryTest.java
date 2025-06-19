@@ -95,6 +95,7 @@ class StudentRepositoryTest {
     course.setCourseName("Pythonコース");
     course.setCourseStartAt(LocalDateTime.of(2025, 1, 1, 10, 0));
     course.setCourseEndAt(LocalDateTime.of(2025, 5, 1, 15, 0));
+    course.setStatusId(1); // statusId 必須になった状態でもエラーにならず、安心してテスト通せる!
 
     sut.registerStudentCourse(course);
 
@@ -130,5 +131,16 @@ class StudentRepositoryTest {
         .isEqualTo("変更されたコース");
   }
 
+  @Test
+  void コースのステータスが更新できること() {
+    List<StudentCourse> courses = sut.searchStudentCourse("1");
+    StudentCourse course = courses.get(0);
+    course.setStatusId(4); // ID=4 → 受講終了
 
+    sut.updateStudentCourse(course);
+
+    List<StudentCourse> updated = sut.searchStudentCourse("1");
+    assertThat(updated.get(0).getStatusId()).isEqualTo(4);
+    assertThat(updated.get(0).getStatusName()).isEqualTo("受講終了");
+  }
 }

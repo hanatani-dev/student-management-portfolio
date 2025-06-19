@@ -155,5 +155,27 @@ class StudentServiceTest {
     verify(repository, times(1)).updateStudent(student);
     verify(repository, times(1)).updateStudentCourse(studentCourse);
   }
+
+  @Test
+  void 受講生コース情報の更新でステータスが正しく反映されること() {
+    Student student = new Student();
+    StudentCourse course = new StudentCourse();
+    course.setId("1");
+    course.setStudentId("1");
+    course.setCourseName("Javaコース");
+    course.setCourseStartAt(LocalDateTime.now());
+    course.setCourseEndAt(LocalDateTime.now().plusMonths(6));
+    course.setStatusId(2); // ← 例えば 2 = 受講中 の場合
+    course.setStatusName("受講中");
+
+    List<StudentCourse> courseList = List.of(course);
+    StudentDetail detail = new StudentDetail(student, courseList);
+
+    sut.updateStudent(detail);
+
+    verify(repository, times(1)).updateStudentCourse(course);
+    assertEquals(2, course.getStatusId());
+    assertEquals("受講中", course.getStatusName());
+  }
 }
 
