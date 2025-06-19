@@ -126,6 +126,37 @@ class StudentControllerTest {
   }
 
   @Test
+  void 受講生の更新でステータスが含まれていてもエラーが出ないこと() throws Exception {
+    mockMvc.perform(put("/updateStudent").contentType(MediaType.APPLICATION_JSON).content(
+        """
+            {
+              "student": {
+                "id": "1",
+                "name": "江並公史",
+                "kanaName": "エナミコウジ",
+                "nickname": "エナミ",
+                "email": "test@example.com",
+                "area": "奈良県",
+                "age": "36",
+                "sex": "男性",
+                "remark": ""
+              },
+              "studentCourseList":[
+                {
+                  "id": "1",
+                  "studentId": "1",
+                  "courseName": "Javaコース",
+                  "courseStartAt": "2024-04-01T10:00:00",
+                  "courseEndAt": "2025-04-01T10:00:00",
+                  "status": "本申込"
+                }
+              ]
+            }
+            """
+    )).andExpect(status().isOk());
+  }
+
+  @Test
   void 受講生詳細の例外APIが実行できてステータスが400で返ってくること() throws Exception {
     mockMvc.perform(get("/exception"))
         .andDo(print()) // ← 追加！
