@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
+import raisetech.StudentManagement.domain.StudentSearchCondition;
 
 /**
  * 受講生テーブルと受講生コース情報テーブルと紐づくRepositoryです。
@@ -13,7 +14,7 @@ public interface StudentRepository {
 
   // 全受講生の取得
   List<Student> search();
-  
+
   // IDで受講生を検索
   Student searchStudent(String id);
 
@@ -34,4 +35,8 @@ public interface StudentRepository {
 
   // コース名の更新（1件）
   void updateStudentCourse(StudentCourse studentCourse);
+
+  //条件付き一覧検索
+  List<Student> searchByConditions(
+      StudentSearchCondition condition);
 }
