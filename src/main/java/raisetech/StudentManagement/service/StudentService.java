@@ -10,6 +10,7 @@ import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.domain.StudentSearchCondition;
 import raisetech.StudentManagement.repository.StudentRepository;
 
 /**
@@ -48,6 +49,18 @@ public class StudentService {
     Student student = repository.searchStudent(id);
     List<StudentCourse> studentCourse = repository.searchStudentCourse(student.getId());
     return new StudentDetail(student, studentCourse);
+  }
+
+  /**
+   * 条件付きの受講生検索です。
+   *
+   * @param condition 検索条件（名前・性別など）
+   * @return 条件に一致する受講生詳細のリスト
+   */
+  public List<StudentDetail> searchStudentsByConditions(StudentSearchCondition condition) {
+    List<Student> studentList = repository.searchByConditions(condition);
+    List<StudentCourse> courseList = repository.searchStudentCourseList();
+    return converter.convertStudentDetails(studentList, courseList);
   }
 
   /**

@@ -92,5 +92,25 @@
     WHERE id = #{id}
   </update>
 
-
+  <!-- 条件検索：動的SQL -->
+  <select id="searchByConditions"
+    parameterType="raisetech.StudentManagement.domain.StudentSearchCondition"
+    resultType="raisetech.StudentManagement.data.Student">
+    SELECT * FROM students
+    <where>
+      <if test="name != null and name != ''">
+        AND name LIKE CONCAT('%', #{name}, '%')
+      </if>
+      <if test="area != null and area != ''">
+        AND area = #{area}
+      </if>
+      <if test="sex != null and sex != ''">
+        AND sex = #{sex}
+      </if>
+      <if test="deleted != null">
+        AND is_deleted = #{deleted}
+      </if>
+    </where>
+  </select>
+  
 </mapper>

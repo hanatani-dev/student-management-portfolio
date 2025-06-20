@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.domain.StudentSearchCondition;
 import raisetech.StudentManagement.exceptionHandler.TestException;
 import raisetech.StudentManagement.service.StudentService;
 
@@ -46,6 +47,16 @@ public class StudentController {
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
     return service.searchStudentList();
+  }
+
+  /**
+   * 条件指定による受講生検索です。
+   */
+  @Operation(summary = "条件付き検索", description = "名前・性別・地域・削除フラグで受講生を検索します。")
+  @GetMapping("/searchStudent")
+  public List<StudentDetail> searchStudentsByCondition(
+      @Validated StudentSearchCondition condition) {
+    return service.searchStudentsByConditions(condition);
   }
 
   // 新しく追加
@@ -81,6 +92,18 @@ public class StudentController {
   public StudentDetail getStudent(
       @PathVariable @NotBlank @Pattern(regexp = "^\\d+$") String id) {
     return service.searchStudent(id);
+  }
+
+  /**
+   * 条件指定による受講生検索です。
+   *
+   * @param condition 検索条件（名前・性別など）
+   * @return 該当する受講生詳細のリスト
+   */
+  @Operation(summary = "条件検索", description = "条件を指定して受講生を検索します。")
+  @PostMapping("/students/search")
+  public List<StudentDetail> searchByConditions(@RequestBody StudentSearchCondition condition) {
+    return service.searchStudentsByConditions(condition);
   }
 
   /**

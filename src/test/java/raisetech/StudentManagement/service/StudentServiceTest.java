@@ -17,6 +17,7 @@ import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.domain.StudentSearchCondition;
 import raisetech.StudentManagement.repository.StudentRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -176,6 +177,33 @@ class StudentServiceTest {
     verify(repository, times(1)).updateStudentCourse(course);
     assertEquals(2, course.getStatusId());
     assertEquals("受講中", course.getStatusName());
+  }
+
+  @Test
+  void 条件指定検索_リポジトリとコンバーターが正しく呼び出されること() {
+    // --- 準備 ---
+    var condition = new StudentSearchCondition();
+    condition.setName("スネ夫");
+    condition.setSex("男性");
+    condition.setArea("東京都");
+
+    List<Student> mockStudentList = new ArrayList<>();
+    List<StudentCourse> mockCourseList = new ArrayList<>();
+    List<StudentDetail> expectedDetails = new ArrayList<>();
+
+    when(repository.searchByConditions(condition)).thenReturn(mockStudentList);
+    when(repository.searchStudentCourseList()).thenReturn(mockCourseList);
+    when(converter.convertStudentDetails(mockStudentList, mockCourseList)).thenReturn(
+        expectedDetails);
+
+    // --- 実行 ---
+    List<StudentDetail> actual = sut.searchStudentsByConditions(condition);
+
+    // --- 検証 ---
+    verify(repository).searchByConditions(condition);
+    verify(repository).searchStudentCourseList();
+    verify(converter).convertStudentDetails(mockStudentList, mockCourseList);
+    assertEquals(expectedDetails, actual);
   }
 }
 
