@@ -31,14 +31,45 @@ Java / Spring Boot を使用し、実務を想定したCRUD操作を実装して
 
 ---
 
-## 💡 工夫ポイント
 
-- **MyBatisの動的SQLを活用**し、検索条件に応じた柔軟なWHERE句を構築。
-- **DTO設計**を意識し、`StudentDetail` や `StudentSearchCondition` でドメインロジックを分離。
-- **パッケージ構成を明確化**し、controller / service / domain / repository を役割ごとに整理。
-- **ステータス管理機能**により、受講生の進捗状況を可視化。
-- テストでは**依存注入・モック**を使用し、ユニットテストとして完結する設計に。
+---
 
+## 🧪 テスト・動作確認の実施状況
+
+アプリの品質と動作確認のため、以下のテスト・確認を実施しています。
+
+### ✅ 単体テスト（JUnit / Mockito）
+
+- Service層、Repository層、Converter層などを対象に33件のテストを実装
+- Gradleで `./gradlew test` 実行し、HTMLレポートで結果確認（全件成功）
+- テスト対象：登録・更新・検索・論理削除・例外ハンドリング など
+<details>
+<img src= "https://github.com/user-attachments/assets/956f4d45-9d3a-4293-b5b7-d642b371ac20" width="800" />
+</details>
+
+### ✅ MySQL からのデータ確認
+
+- `statuses` や `students` `students_courses` に対し、手動でデータを挿入して検証
+- 外部キー制約、日付データの整合性も含めてチェック済み
+
+<pre>
+sql
+SELECT * FROM students_courses;
+ </pre>
+
+
+ 
+---
+    
+### ✅ Postman / Swagger でAPI動作確認
+Swagger UIでAPI一覧を確認しながら実行可能
+
+Postmanで実際のJSONを使って PUT /updateStudent を送信し、DBに反映されることを確認
+
+GET /testException によるエラーハンドリングも検証済
+<details>
+<img src= "https://github.com/user-attachments/assets/39192a4e-4641-4e54-a106-745ec2342d4c" width="900" /> 
+</details>
 ---
 
 <details>
@@ -151,6 +182,14 @@ http://StudentManagementALB-xxxxxxxx.ap-northeast-1.elb.amazonaws.com/studentLis
 - RDSのデータベース名の大文字小文字の違いでAPIが動かず、EC2とローカルでDBを統一し直して再構築
 
 - application.properties の接続情報は .gitignore とGitHub Secretsで厳重に管理
+- 
+## 💡 工夫ポイント　やりたかったこと・苦労した点（最後にまとめて）　
+
+- **MyBatisの動的SQLを活用**し、検索条件に応じた柔軟なWHERE句を構築。
+- **DTO設計**を意識し、`StudentDetail` や `StudentSearchCondition` でドメインロジックを分離。
+- **パッケージ構成を明確化**し、controller / service / domain / repository を役割ごとに整理。
+- **ステータス管理機能**により、受講生の進捗状況を可視化。
+- テストでは**依存注入・モック**を使用し、ユニットテストとして完結する設計に。
 
 ---
 
@@ -161,6 +200,7 @@ http://StudentManagementALB-xxxxxxxx.ap-northeast-1.elb.amazonaws.com/studentLis
 - EC2内で systemctl restart StudentManagement.service を実行
 
 ## 一部抜粋
+
 <pre> 
 JavaTest.yml 
     
