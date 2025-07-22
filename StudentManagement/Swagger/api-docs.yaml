@@ -1,0 +1,283 @@
+openapi: 3.0.1
+info:
+  title: 受講生管理システム
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /updateStudent:
+    put:
+      tags:
+      - student-controller
+      summary: 受講生更新
+      description: 受講生情報を更新します
+      operationId: updateStudent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDetail'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /students/search:
+    post:
+      tags:
+      - student-controller
+      summary: 条件検索
+      description: 条件を指定して受講生を検索します。
+      operationId: searchByConditions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentSearchCondition'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentDetail'
+  /registerStudent:
+    post:
+      tags:
+      - student-controller
+      summary: 受講生登録
+      description: 受講生を登録します。
+      operationId: registerStudent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDetail'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StudentDetail'
+  /testException:
+    get:
+      tags:
+      - student-controller
+      summary: テスト用の例外発生
+      description: 意図的にTestExceptionを発生させるテスト用エンドポイントです。
+      operationId: testException
+      responses:
+        "500":
+          description: テスト用例外が発生しました
+  /studentList:
+    get:
+      tags:
+      - student-controller
+      summary: 一覧検索
+      description: 受講生の一覧を検索します。
+      operationId: getStudentList
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentDetail'
+  /student/{id}:
+    get:
+      tags:
+      - student-controller
+      summary: 個人検索
+      description: 指定したIDの受講生を検索します。
+      operationId: getStudent
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          pattern: ^\d+$
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StudentDetail'
+  /searchStudent:
+    get:
+      tags:
+      - student-controller
+      summary: 条件付き検索
+      description: 名前・性別・地域・削除フラグで受講生を検索します。
+      operationId: searchStudentsByCondition
+      parameters:
+      - name: condition
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/StudentSearchCondition'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentDetail'
+  /exception:
+    get:
+      tags:
+      - student-controller
+      summary: 旧API用メッセージ
+      description: 古いURLにアクセスされた際のメッセージを返すエンドポイント
+      operationId: oldApiMessage
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    Student:
+      required:
+      - email
+      - id
+      - kanaName
+      - name
+      type: object
+      properties:
+        id:
+          pattern: ^\d+$
+          type: string
+          description: 受講生ID（自動採番）
+          example: "1"
+        name:
+          maxLength: 100
+          minLength: 0
+          type: string
+          description: 氏名
+          example: 山田 花子
+        kanaName:
+          maxLength: 100
+          minLength: 0
+          type: string
+          description: フリガナ
+          example: ヤマダ ハナコ
+        nickname:
+          maxLength: 20
+          minLength: 0
+          type: string
+          description: ニックネーム
+          example: はなちゃん
+        email:
+          type: string
+          description: メールアドレス
+          example: hana@example.com
+        area:
+          maxLength: 20
+          minLength: 0
+          type: string
+          description: 住んでいる地域
+          example: 東京都渋谷区
+        age:
+          maximum: 150
+          minimum: 0
+          type: integer
+          description: 年齢
+          format: int32
+          example: 25
+        sex:
+          pattern: ^(男性|女性|その他)?$
+          type: string
+          description: 性別（男性／女性／その他）
+          example: 女性
+        remark:
+          maxLength: 300
+          minLength: 0
+          type: string
+          description: 受講生の備考
+          example: 試験日は12/1
+        deleted:
+          type: boolean
+      description: 受講生
+    StudentCourse:
+      required:
+      - courseEndAt
+      - courseName
+      - courseStartAt
+      - id
+      - statusId
+      - studentId
+      type: object
+      properties:
+        id:
+          maxLength: 10
+          minLength: 0
+          type: string
+          description: コースID（自動採番）
+          example: "1"
+        studentId:
+          type: string
+          description: 受講生ID (受講生情報にて自動採番されている)
+          example: "1"
+        courseName:
+          maxLength: 50
+          minLength: 0
+          type: string
+          description: コース名
+          example: Javaプログラミング入門
+        courseStartAt:
+          type: string
+          description: コース開始日
+          format: date-time
+        courseEndAt:
+          type: string
+          description: コース終了日
+          format: date-time
+        statusId:
+          type: integer
+          description: ステータスID
+          format: int32
+          example: 1
+        statusName:
+          type: string
+          description: ステータス名（仮申込／本申込 など）
+          example: 仮申込
+      description: 受講生コース情報
+    StudentDetail:
+      required:
+      - student
+      type: object
+      properties:
+        student:
+          $ref: '#/components/schemas/Student'
+        studentCourseList:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentCourse'
+      description: 受講生詳細
+    StudentSearchCondition:
+      type: object
+      properties:
+        name:
+          type: string
+        sex:
+          type: string
+        area:
+          type: string
+        deleted:
+          type: boolean

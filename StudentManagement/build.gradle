@@ -1,0 +1,78 @@
+plugins {//この画面は、プログラムのバージョンアップするときなどに使い、開発時はあまり使わない。
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5' // ここだけ下げる
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'raisetech'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {//第10回で追加。
+    compileOnly {
+        extendsFrom annotationProcessor//この、アノテーションプロセッサー入れるために、ランボックの機能入れる。
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-web'//プログラム実行するとき使う
+
+    //Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    //Validation=入力チェック
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    //OpenAPI Generator=API仕様書作成用
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
+    //「apache.commons lang」= 便利機能、ユーティリティ
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //MySQLドライバ
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    //MyBatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+    //APサーバー(Tomcat)
+    compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'//プログラム実行するとき”のみ”使う
+
+    //SpringBoot Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'//testするときだけ使う
+
+    //MyBatis Test
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+
+    //H2(InMemoryDB)…一時的なデータベース。Test実行してるときにしか立ち上がらないデータベース。
+    testImplementation 'com.h2database:h2:2.2.224'
+
+    //ControllerTest時に、動作確認のため、個人的に追加。
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'org.assertj:assertj-core:3.24.2'//AssertJ
+
+}
+
+tasks.named('test') {//グレイドルに”test”を追加できる　
+    useJUnitPlatform()//
+}
+
+bootJar {
+    enabled = true
+}
