@@ -57,21 +57,20 @@ sql
 SELECT * FROM students_courses;
  </pre>
 
-
- 
----
-    
 ### ✅ Postman / Swagger でAPI動作確認
-Swagger UIでAPI一覧を確認しながら実行可能
 
-Postmanで実際のJSONを使って PUT /updateStudent を送信し、DBに反映されることを確認
+- ✅ [Swagger UIでAPI仕様を確認する](https://swagger-url.vercel.app/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhanatani-dev%2Fstudent-management-portfolio%2Frefs%2Fheads%2Fmain%2FStudentManagement%2FSwagger%2Fapi-docs.yaml)
+- Swagger UIでAPI一覧を確認しながら実行可能
+- PostmanでJSONを使って PUT /updateStudent を送信し、DBに反映されることを確認
+- GET /testException によるエラーハンドリングも検証済
 
-GET /testException によるエラーハンドリングも検証済
 <details>
 <img src= "https://github.com/user-attachments/assets/39192a4e-4641-4e54-a106-745ec2342d4c" width="900" /> 
 </details>
----
 
+
+---
+###
 <details>
 <summary>📁 ディレクトリ構成を見る</summary>
 <pre>
