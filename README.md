@@ -20,60 +20,8 @@ Java / Spring Boot を使用し、実務を想定したCRUD操作を実装して
 
 ---
 
-## 📚 主な機能
-
-| 機能カテゴリ         | 概要                                 |
-|----------------------|--------------------------------------|
-| 受講生管理機能       | 登録 / 一覧表示 / ID検索 / 条件検索 / 編集 / 論理削除 |
-| ステータス管理       | 仮申込 / 本申込 / 受講中 / 受講終了 をコースごとに保持 |
-| 検索機能             | 名前・性別・地域・削除済み など複数条件で検索可能 |
-| テスト               | Service層のユニットテストを中心に実装（Mockito使用） |
-
----
-
-
----
-
-## 🧪 テスト・動作確認の実施状況
-
-アプリの品質と動作確認のため、以下のテスト・確認を実施しています。
-
-### ✅ 単体テスト（JUnit / Mockito）
-
-- Service層、Repository層、Converter層などを対象に33件のテストを実装
-- Gradleで `./gradlew test` 実行し、HTMLレポートで結果確認（全件成功）
-- テスト対象：登録・更新・検索・論理削除・例外ハンドリング など
 <details>
-<img src= "https://github.com/user-attachments/assets/956f4d45-9d3a-4293-b5b7-d642b371ac20" width="800" />
-</details>
-
-### ✅ MySQL からのデータ確認
-
-- `statuses` や `students` `students_courses` に対し、手動でデータを挿入して検証
-- 外部キー制約、日付データの整合性も含めてチェック済み
-
-<pre>
-sql
-SELECT * FROM students_courses;
- </pre>
-
-
- 
----
-    
-### ✅ Postman / Swagger でAPI動作確認
-Swagger UIでAPI一覧を確認しながら実行可能
-
-Postmanで実際のJSONを使って PUT /updateStudent を送信し、DBに反映されることを確認
-
-GET /testException によるエラーハンドリングも検証済
-<details>
-<img src= "https://github.com/user-attachments/assets/39192a4e-4641-4e54-a106-745ec2342d4c" width="900" /> 
-</details>
----
-
-<details>
-<summary>📁 ディレクトリ構成を見る</summary>
+<summary>📁 ディレクトリ構成を見る（クリックで展開）</summary>
 <pre>
 src
 ├── main
@@ -107,7 +55,145 @@ src
 │       └── data.sql                    // テスト用初期データ
 </details>
 
+
 ---
+
+## 🗃️ ER図（受講生・コース・ステータス）
+
+![ER図](docs/images/er_diagram.png)
+
+> ER図で全体像を把握しやすくした後、各テーブルの詳細は以下に記載しています。
+
+---
+
+## 🔍 テーブル定義一覧 
+
+ER図の補足として、各テーブルのカラム定義や制約を以下にまとめています。
+
+### 🧍‍♂️　students テーブル
+
+
+| カラム名     | 型            | NULL許可 | キー種別 | デフォルト値 | 補足                            |
+|--------------|----------------|-----------|----------|----------------|---------------------------------|
+| id           | int            | NO        | PRI      | NULL           | 自動採番（主キー）             |
+| name         | varchar(100)   | YES       |          | NULL           | 氏名                            |
+| kana_name    | varchar(100)   | YES       |          | NULL           | フリガナ                        |
+| nickname     | varchar(100)   | YES       |          | NULL           | ニックネーム                    |
+| email        | varchar(100)   | NO        | UNI      | NULL           | 一意制約あり（重複不可）        |
+| area         | varchar(100)   | YES       |          | NULL           | 地域                            |
+| age          | int            | YES       |          | NULL           | 年齢                            |
+| sex          | varchar(100)   | YES       |          | NULL           | 性別                            |
+| remark       | varchar(255)   | YES       |          | NULL           | 備考                            |
+| is_deleted   | tinyint(1)     | NO        |          | 0              | 論理削除：0=有効、1=削除済      |
+
+
+---
+
+<details>
+<summary>📚 students_courses テーブル（クリックで展開）</summary>
+
+| カラム名         | 型            | NULL許可 | キー種別 | デフォルト値 | 補足                                |
+|------------------|----------------|-----------|----------|----------------|-------------------------------------|
+| id               | int            | NO        | PRI      | NULL           | 自動採番（主キー）                 |
+| student_id       | int            | NO        | MUL      | NULL           | 外部キー → `students.id`           |
+| course_name      | varchar(100)   | NO        |          | NULL           | コース名                            |
+| course_start_at  | datetime       | NO        |          | NULL           | 開始日                              |
+| course_end_at    | datetime       | NO        |          | NULL           | 終了日                              |
+| status_id        | int            | YES       | MUL      | 1              | 外部キー → `statuses.id`（初期値） |
+
+</details>
+
+---
+
+<details>
+<summary>📊 statuses テーブル（クリックで展開）</summary>
+
+| カラム名 | 型           | NULL許可 | キー種別 | デフォルト値 | 補足                      |
+|----------|---------------|-----------|----------|----------------|---------------------------|
+| id       | int           | NO        | PRI      | NULL           | ステータスID（主キー）    |
+| name     | varchar(50)   | NO        |          | NULL           | ステータス名（例：仮申込） |
+
+</details>
+
+---
+
+
+## 📚 主な機能
+
+| 機能カテゴリ         | 概要                                 |
+|----------------------|--------------------------------------|
+| 受講生管理機能       | 登録 / 一覧表示 / ID検索 / 条件検索 / 編集 / 論理削除 |
+| ステータス管理       | 仮申込 / 本申込 / 受講中 / 受講終了 をコースごとに保持 |
+| 検索機能             | 名前・性別・地域・削除済み など複数条件で検索可能 |
+| テスト               | Service層のユニットテストを中心に実装（Mockito使用） |
+
+---
+
+## 🌐 画面URL一覧
+
+| 画面名         | パス                         | 備考       |
+|----------------|------------------------------|------------|
+| 受講生一覧     | `/studentList`               | 初期画面    |
+| 新規登録画面   | `/studentRegister`           | フォーム    |
+| 編集画面       | `/studentEdit?id=1`          |             |
+| エラー検証用   | `/testException`             | テスト用    |
+
+💡 上記パスは、本番環境では `http://StudentManagementALB-xxxxx.ap-northeast-1.elb.amazonaws.com/` に続けてアクセスします。  
+（※現在はEC2停止中）
+
+---
+
+## 🧪 テスト・動作確認の実施状況
+
+アプリの品質と動作確認のため、以下のテスト・確認を実施しています。
+
+---
+
+### ✅ 単体テスト（JUnit / Mockito）
+
+- Service層、Repository層、Converter層などを対象に33件のテストを実装
+- Gradleで `./gradlew test` 実行し、HTMLレポートで結果確認（全件成功）
+- テスト対象：登録・更新・検索・論理削除・例外ハンドリング など
+
+---
+
+<details>
+<summary>✅ 実行結果：全テスト成功！HTMLレポートを見る</summary>
+<br>
+<img src="docs/images/test_html_report.png" width="800" />
+</details>
+
+---
+
+### ✅ Postman / Swagger でAPI動作確認
+
+- ✅ [Swagger UIでAPI仕様を確認する](https://swagger-url.vercel.app/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhanatani-dev%2Fstudent-management-portfolio%2Frefs%2Fheads%2Fmain%2FStudentManagement%2FSwagger%2Fapi-docs.yaml)
+- Swagger UIでAPI一覧を確認しながら実行可能
+- PostmanでJSONを使って PUT /updateStudent を送信し、DBに反映されることを確認
+- GET /testException によるエラーハンドリングも検証済
+- Swagger / Postman 検証に加え、MySQL上でも外部キー制約や整合性を手動で確認し、データ整合性を検証済み。
+
+---
+
+### 📝 更新処理（PUT /updateStudent）の実行例
+
+下記は、Postmanを使って受講生情報を更新した際のリクエスト例です。  
+論理削除フラグ（`"deleted": true`）や、受講コース情報も同時に更新されていることがわかります。
+
+- リクエスト形式：`JSON`  
+- エンドポイント：`PUT /updateStudent`  
+- レスポンス：`200 OK`（更新成功）
+
+---
+
+<details>
+<summary>📮 PostmanでのAPI更新リクエスト（PUT /updateStudent）の実行結果を見る</summary>
+<br>
+<img src="docs/images/postman_put_update.png" width="900" />
+</details>
+
+---
+
 
 ## 🚀 ローカルでの起動方法
 
@@ -156,7 +242,7 @@ http://StudentManagementALB-xxxxxxxx.ap-northeast-1.elb.amazonaws.com/studentLis
 
 ユーザーアクセスの流れを示した全体構成です。
 
-<img width="350" height="350" alt="システム構成図" src="https://github.com/user-attachments/assets/bb1eb094-68b8-47af-9dca-b14713a297a3" />
+<img width="350" height="350" alt="システム構成図" src="docs/images/system_architecture.png" />
 
 ---
 
@@ -173,23 +259,24 @@ http://StudentManagementALB-xxxxxxxx.ap-northeast-1.elb.amazonaws.com/studentLis
 
 ---
 
-## 💪 工夫＆苦労したポイント
 
-- Elastic IPが使えない環境でも動くように、GitHub ActionsのYAMLを毎回手動でIP更新する工夫を実施
+## 💡 開発・運用で工夫したこと＆乗り越えた課題
 
-- .jar を scpでEC2に転送し、systemdで自動再起動できるよう構成
+### 🔧 開発・設計面での工夫
 
-- RDSのデータベース名の大文字小文字の違いでAPIが動かず、EC2とローカルでDBを統一し直して再構築
+- **MyBatisの動的SQL**を活用し、検索条件に応じた柔軟なWHERE句を構築
+- **DTO設計**により、`StudentDetail` や `StudentSearchCondition` など、ドメインロジックを明確に分離
+- **パッケージ構成を役割ごとに整理**し、保守性と可読性を意識
+- **ステータス管理機能**を実装し、受講生の進捗を一目で把握できるよう設計
+- **Mockitoを活用したユニットテスト**で、依存注入＆モックによる疎結合な設計を実現
 
-- application.properties の接続情報は .gitignore とGitHub Secretsで厳重に管理
-- 
-## 💡 工夫ポイント　やりたかったこと・苦労した点（最後にまとめて）　
+### ☁️ インフラ・運用面での工夫と苦労
 
-- **MyBatisの動的SQLを活用**し、検索条件に応じた柔軟なWHERE句を構築。
-- **DTO設計**を意識し、`StudentDetail` や `StudentSearchCondition` でドメインロジックを分離。
-- **パッケージ構成を明確化**し、controller / service / domain / repository を役割ごとに整理。
-- **ステータス管理機能**により、受講生の進捗状況を可視化。
-- テストでは**依存注入・モック**を使用し、ユニットテストとして完結する設計に。
+- Elastic IPを使えない環境でも対応できるよう、GitHub Actions のYAMLを毎回手動で更新する工夫を実施
+- `.jar`ファイルを `scp` でEC2に転送し、`systemd` による自動再起動構成を実現
+- RDSのDB名の大文字・小文字の差異によりAPIが動かず、ローカルと本番のDBを統一し再構築
+- 接続情報は `.gitignore` と GitHub Secrets を活用し、機密情報を厳重に管理
+
 
 ---
 
