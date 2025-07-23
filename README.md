@@ -134,8 +134,7 @@ ER図の補足として、各テーブルのカラム定義や制約を以下に
 | 編集画面       | `/studentEdit?id=1`          |             |
 | エラー検証用   | `/testException`             | テスト用    |
 
-💡 上記パスは、本番環境では `http://StudentManagementALB-xxxxx.ap-northeast-1.elb.amazonaws.com/` に続けてアクセスします。  
-（※現在はEC2停止中）
+💡 上記パスは、本番環境では `http://StudentManagementALB-xxxxx.ap-northeast-1.elb.amazonaws.com/` に続けてアクセスします。（※現在はEC2停止中）
 
 ---
 
