@@ -157,7 +157,7 @@ ER図の補足として、各テーブルのカラム定義や制約を以下に
 
 ### ✅ Postman / Swagger でAPI動作確認
 
-- ✅ [Swagger UIでAPI仕様を確認する](https://swagger-url.vercel.app/?url=...)
+- ✅ [Swagger UIでAPI仕様を確認する](https://swagger-url.vercel.app/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhanatani-dev%2Fstudent-management-portfolio%2Frefs%2Fheads%2Fmain%2FStudentManagement%2FSwagger%2Fapi-docs.yaml)
 - PostmanでJSONを使って PUT /updateStudent を送信し、DBに反映されることを確認
 - その他のエラーハンドリングも検証済
 
