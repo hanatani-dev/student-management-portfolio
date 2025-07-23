@@ -1,7 +1,7 @@
-# StudentManagement（受講生管理Webアプリ / Spring Boot × MyBatis × AWS構成）
+# 🎓 StudentManagement - 教育現場向け 受講生管理Webアプリ
 
-受講生の情報を登録・編集・削除できる、教育現場向けのWebアプリケーションです。  
-Java / Spring Boot を使用し、実務を想定したCRUD操作を実装しています。
+教育現場での受講生情報の**登録・編集・削除や進捗管理をスムーズに行える**、Webアプリケーションです。  
+Spring Boot / MySQL / AWS構成により、ブラウザ・API経由で動作します。
 
 ---
 
@@ -60,11 +60,12 @@ src
 
 ## 🗃️ ER図（受講生・コース・ステータス）
 
-![ER図](docs/images/er_diagram.png)
+<img src="docs/images/er_diagram.png" width="400" />
 
 > ER図で全体像を把握しやすくした後、各テーブルの詳細は以下に記載しています。
 
 ---
+
 
 ## 🔍 テーブル定義一覧 
 
@@ -86,9 +87,6 @@ ER図の補足として、各テーブルのカラム定義や制約を以下に
 | remark       | varchar(255)   | YES       |          | NULL           | 備考                            |
 | is_deleted   | tinyint(1)     | NO        |          | 0              | 論理削除：0=有効、1=削除済      |
 
-
----
-
 <details>
 <summary>📚 students_courses テーブル（クリックで展開）</summary>
 
@@ -102,8 +100,6 @@ ER図の補足として、各テーブルのカラム定義や制約を以下に
 | status_id        | int            | YES       | MUL      | 1              | 外部キー → `statuses.id`（初期値） |
 
 </details>
-
----
 
 <details>
 <summary>📊 statuses テーブル（クリックで展開）</summary>
@@ -147,50 +143,55 @@ ER図の補足として、各テーブルのカラム定義や制約を以下に
 
 アプリの品質と動作確認のため、以下のテスト・確認を実施しています。
 
----
-
 ### ✅ 単体テスト（JUnit / Mockito）
 
 - Service層、Repository層、Converter層などを対象に33件のテストを実装
 - Gradleで `./gradlew test` 実行し、HTMLレポートで結果確認（全件成功）
 - テスト対象：登録・更新・検索・論理削除・例外ハンドリング など
 
----
-
 <details>
-<summary>✅ 実行結果：全テスト成功！HTMLレポートを見る</summary>
-<br>
-<img src="docs/images/test_html_report.png" width="800" />
-</details>
+<summary>📊 HTMLレポートによるテスト結果を表示（クリックで展開）</summary>
 
----
+<img src="docs/images/test_html_report.png" width="1300" />
+</details>
 
 ### ✅ Postman / Swagger でAPI動作確認
 
-- ✅ [Swagger UIでAPI仕様を確認する](https://swagger-url.vercel.app/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhanatani-dev%2Fstudent-management-portfolio%2Frefs%2Fheads%2Fmain%2FStudentManagement%2FSwagger%2Fapi-docs.yaml)
-- Swagger UIでAPI一覧を確認しながら実行可能
+- ✅ [Swagger UIでAPI仕様を確認する](https://swagger-url.vercel.app/?url=...)
 - PostmanでJSONを使って PUT /updateStudent を送信し、DBに反映されることを確認
-- GET /testException によるエラーハンドリングも検証済
-- Swagger / Postman 検証に加え、MySQL上でも外部キー制約や整合性を手動で確認し、データ整合性を検証済み。
-
----
+- その他のエラーハンドリングも検証済
 
 ### 📝 更新処理（PUT /updateStudent）の実行例
 
 下記は、Postmanを使って受講生情報を更新した際のリクエスト例です。  
-論理削除フラグ（`"deleted": true`）や、受講コース情報も同時に更新されていることがわかります。
+論理削除フラグ（"deleted": true）や、受講コース情報も同時に更新されていることがわかります。
 
-- リクエスト形式：`JSON`  
-- エンドポイント：`PUT /updateStudent`  
-- レスポンス：`200 OK`（更新成功）
+- リクエスト形式：JSON  
+- エンドポイント：PUT /updateStudent  
+- レスポンス：200 OK（更新成功）
+
+<details>
+<summary>🖼️ PostmanでのAPI更新リクエストの実行画面（クリックで展開）</summary>
+
+<img src="docs/images/postman_put_update.png" width="2000" />
+</details>
 
 ---
 
-<details>
-<summary>📮 PostmanでのAPI更新リクエスト（PUT /updateStudent）の実行結果を見る</summary>
-<br>
-<img src="docs/images/postman_put_update.png" width="900" />
-</details>
+
+## ☁️ AWS構成とデプロイへのこだわり
+
+本アプリケーションは、AWSを使って本番運用を想定した構成でデプロイしています。
+
+- 🔗 本番URL（ALB経由でEC2へルーティング）
+
+http://StudentManagementALB-xxxxxxxx.ap-northeast-1.elb.amazonaws.com/studentList
+
+
+
+### 🗂️ システム構成図（ユーザー視点）
+
+<img width="350" height="350" alt="システム構成図" src="docs/images/system_architecture.png" />
 
 ---
 
@@ -207,43 +208,6 @@ ER図の補足として、各テーブルのカラム定義や制約を以下に
 📌 パスワードなどの機密情報は .gitignore に含めるよう注意し、GitHub等に公開しないようにしています。
 
 
-    
----
-
-
-## 🔗 リンク
-
-- 本リポジトリ：[https://github.com/hanatani-dev/student-management-portfolio](https://github.com/hanatani-dev/student-management-portfolio)
-
----
-
-## 🙋‍♀️ 制作背景
-
-病棟クラークとして3年勤務した経験から、業務における**「個人情報を正確・効率的に扱う」重要性**を痛感。  
-その経験を活かし、教育現場の受講生管理業務を想定したアプリケーションとして本プロジェクトを開発しています。  
-また、教育現場での受講生管理の煩雑さを減らし、「誰が・どのコースを・どのステータスで受講しているか」を把握しやすいように工夫しました。
-
-
----
-
-
-## ☁️ AWS構成とデプロイへのこだわり
-
-本アプリケーションは、AWSを使って本番運用を想定した構成でデプロイしています。
-
-- 🔗 本番URL（ALB経由でEC2へルーティング）
-
-http://StudentManagementALB-xxxxxxxx.ap-northeast-1.elb.amazonaws.com/studentList
-
----
-
-
-## 🗂️ システム構成図（ユーザー視点）
-
-ユーザーアクセスの流れを示した全体構成です。
-
-<img width="350" height="350" alt="システム構成図" src="docs/images/system_architecture.png" />
-
 ---
 
 
@@ -257,8 +221,29 @@ http://StudentManagementALB-xxxxxxxx.ap-northeast-1.elb.amazonaws.com/studentLis
 | RDS（MySQL） | アプリの本番用DBとして使用 |
 | GitHub Actions | CI/CDでビルドとEC2への自動デプロイ |
 
+
 ---
 
+## 🔁 GitHub Actions（CI/CD）
+
+- `./gradlew bootJar` でビルド
+- SCPでEC2へJar転送（秘密鍵はGitHub Secretsで管理）
+- EC2内で `systemctl restart StudentManagement.service` を実行
+
+### 使用した GitHub Actions（YAML）の例
+
+<pre>
+name: SSH Application Deploy
+uses: appleboy/ssh-action@master
+with:
+  host: ${{ env.EC2_HOST }}
+  username: ${{ env.EC2_USER }}
+  key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+  script: |
+    sudo systemctl restart StudentManagement
+</pre>
+
+---
 
 ## 💡 開発・運用で工夫したこと＆乗り越えた課題
 
@@ -280,28 +265,16 @@ http://StudentManagementALB-xxxxxxxx.ap-northeast-1.elb.amazonaws.com/studentLis
 
 ---
 
-## 🔁 GitHub Actions（CI/CD）
 
-- ./gradlew bootJar でビルド
-- SCPでEC2へJar転送（秘密鍵はGitHub Secrets管理）
-- EC2内で systemctl restart StudentManagement.service を実行
+## 🙋‍♀️ 制作背景
 
-## 一部抜粋
+病棟クラークとして3年勤務した経験から、業務における**「個人情報を正確・効率的に扱う」重要性**を痛感。  
+その経験を活かし、教育現場の受講生管理業務を想定したアプリケーションとして本プロジェクトを開発しています。  
+また、教育現場での受講生管理の煩雑さを減らし、「誰が・どのコースを・どのステータスで受講しているか」を把握しやすいように工夫しました。
 
-<pre> 
-JavaTest.yml 
-    
-  name: SSH Application Deploy
-  uses: appleboy/ssh-action@master
-  with:
-    host: ${{ env.EC2_HOST }}
-    username: ${{ env.EC2_USER }}
-    key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
-    script: |
-      sudo systemctl restart StudentManagement
- </pre>
 
 ---
+
 
 ## 🧠 こんな人に届けたい
 
@@ -311,7 +284,18 @@ JavaTest.yml
 
 - 実務に近い構成（プロパティ管理・systemd再起動など）を**手を動かして学びたい**人
 
+
 ---
+
+
+## 🔗 リンク
+
+- 本リポジトリ：[https://github.com/hanatani-dev/student-management-portfolio](https://github.com/hanatani-dev/student-management-portfolio)
+
+
+---
+
+
 
 ## 🗒️ まとめ
 このプロジェクトでは、Javaのバックエンド開発だけでなく、本番運用を想定したAWS構築や自動デプロイも実践しました。
